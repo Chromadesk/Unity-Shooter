@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Scripts
 {
@@ -9,7 +10,6 @@ namespace Scripts
         [SerializeField] protected string displayName;
         [SerializeField] protected float health = 100;
         [SerializeField] protected float moveSpeed = 3f;
-        [SerializeField] protected float jumpPower = 5f;
         [SerializeField] protected GameObject projectile;
         [SerializeField] protected float projectileVelocity;
 
@@ -24,8 +24,9 @@ namespace Scripts
 
         protected void FireProjectile()
         {
+            Vector3 pos = transform.position;
             GameObject bullet = Instantiate(projectile, transform.position, transform.rotation);
-            bullet.GetComponent<Rigidbody>().AddForce(transform.forward * projectileVelocity);
+            bullet.GetComponent<Rigidbody>().AddForce(transform.forward * projectileVelocity, ForceMode.VelocityChange);
         }
     }
 }

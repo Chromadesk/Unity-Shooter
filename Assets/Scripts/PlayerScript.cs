@@ -8,8 +8,6 @@ namespace Scripts
     public class PlayerScript : EntityClass
     {
         Rigidbody rB;
-        [SerializeField] Transform groundCheck;
-        [SerializeField] LayerMask ground;
 
         // Start is called before the first frame update
         void Start()
@@ -20,26 +18,30 @@ namespace Scripts
         // Update is called once per frame
         void Update()
         {
+            FaceMouse();
             RunControls();
+        }
+
+        void FaceMouse()
+        {
+            Vector3 mouse = Input.mousePosition;
+            Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(new Vector3(mouse.x, mouse.y, Camera.main.transform.position.y));
+            transform.LookAt(mouseWorld);
         }
 
         void RunControls()
         {
             if (health <= 0) return;
+
             float inputHorz = Input.GetAxis("Horizontal");
             float inputVert = Input.GetAxis("Vertical");
-
             rB.velocity = new Vector3(inputHorz * moveSpeed, rB.velocity.y, inputVert * moveSpeed);
 
-            if (Input.GetButtonDown("Jump") && IsGrounded())
+            if (Input.GetButtonDown("Fire1"))
             {
-                rB.velocity = new Vector3(rB.velocity.x, jumpPower, rB.velocity.z);
+                Debug.Log("fire");
+                FireProjectile();
             }
-        }
-
-        bool IsGrounded()
-        {
-            return Physics.CheckSphere(groundCheck.position, 0.1f, ground);
         }
 
         protected override void OnDied()
