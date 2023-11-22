@@ -18,6 +18,7 @@ namespace Scripts
         // Update is called once per frame
         void Update()
         {
+            if (health <= 0) return;
             FaceMouse();
             RunControls();
         }
@@ -26,22 +27,22 @@ namespace Scripts
         {
             Vector3 mouse = Input.mousePosition;
             Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(new Vector3(mouse.x, mouse.y, Camera.main.transform.position.y));
-            transform.LookAt(mouseWorld);
+            transform.LookAt(new Vector3(mouseWorld.x, transform.position.y, mouseWorld.z));
         }
 
         void RunControls()
         {
-            if (health <= 0) return;
-
             float inputHorz = Input.GetAxis("Horizontal");
             float inputVert = Input.GetAxis("Vertical");
             rB.velocity = new Vector3(inputHorz * moveSpeed, rB.velocity.y, inputVert * moveSpeed);
 
-            if (Input.GetButtonDown("Fire1"))
-            {
-                Debug.Log("fire");
-                FireProjectile();
-            }
+            //Camera follows the player
+            Camera.main.transform.position = new Vector3(
+                transform.position.x,
+                Camera.main.transform.position.y, 
+                transform.position.z);
+
+            if (Input.GetButtonDown("Fire1")) { Debug.Log("fire"); FireProjectile(); }
         }
 
         protected override void OnDied()
