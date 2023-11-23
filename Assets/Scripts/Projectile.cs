@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        GameObject hit = collision.gameObject;
+        GameObject hit = other.gameObject;
         if (hit == null) return;
-        if (hit.CompareTag("Player")) Debug.Log("farted on");
+        if (hit.CompareTag("Player") || hit.CompareTag("Enemy"))
+        {
+
+        }
         Destroy(gameObject);
     }
 }

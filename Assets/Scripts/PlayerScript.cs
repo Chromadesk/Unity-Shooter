@@ -42,7 +42,7 @@ namespace Scripts
                 Camera.main.transform.position.y, 
                 transform.position.z);
 
-            if (Input.GetButtonDown("Fire1")) { Debug.Log("fire"); FireProjectile(); }
+            if (Input.GetButtonDown("Fire1")) { FireProjectile(); }
         }
 
         protected override void OnDied()

@@ -2216,7 +2216,7 @@ MonoBehaviour:
   health: 100
   moveSpeed: 4.5
   projectile: {fileID: 508557508280956100, guid: 719e1874af926cb47be89f4b34e207c5, type: 3}
-  projectileVelocity: 50
+  projectileVelocity: 10
 --- !u!1001 &1495974136
 PrefabInstance:
   m_ObjectHideFlags: 0
