@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Scripts
 {
@@ -17,9 +20,11 @@ namespace Scripts
         bool alreadyAttacked;
 
         //States
-        [SerializeField] float attackRange = 3f;
-        [SerializeField] float sightRange = 30f;
-        bool canSeePlayer, canAttackPlayer;
+        [SerializeField] float alertRange = 15f;
+        [SerializeField] float attackRange = 10f;
+        [SerializeField] float spaceBuffer = 3f;
+        bool viewBlocked, moveStop;
+        bool isAlerted, hasAttacked, hasBeenAlerted, inAttackRange, inSpaceBuffer = false;
 
         void Start()
         {
@@ -36,27 +41,45 @@ namespace Scripts
             Destroy(gameObject);
         }
 
-        bool hasAttacked = false;
         void DecideAction()
         {
+            //Idle until the AI is alerted by the player.
+            viewBlocked = Physics.Raycast(transform.position, (player.position - transform.position).normalized, out RaycastHit hit, alertRange);
+            if (!isAlerted) { 
+                if (!hasBeenAlerted && hit.collider && hit.collider.gameObject.CompareTag("Player"))
+                {
+                    hasBeenAlerted = true;
+                    rB.velocity = new Vector3(0, 1.5f, 0);
+                    transform.LookAt(player);
+                    Invoke(nameof(AlertEnemy), 0.5f);
+                }
+                return;
+            }
+
             transform.LookAt(player);
-            canSeePlayer = Physics.CheckSphere(transform.position, sightRange, playerLayer);
-            canAttackPlayer = Physics.CheckSphere(transform.position, attackRange, playerLayer);
-            if (canSeePlayer && !canAttackPlayer) AiFollow(player);
-            if (canAttackPlayer && !hasAttacked) 
+
+            inAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
+            inSpaceBuffer = Physics.CheckSphere(transform.position, spaceBuffer, playerLayer);
+            if (!inSpaceBuffer && !moveStop) AiFollow(player);
+            if (inAttackRange && !hasAttacked) 
             { 
-                FireProjectile(); 
+                FireProjectile();
+                moveStop = true;
                 hasAttacked = true;
+                Invoke(nameof(LetMove), 0.3f);
                 Invoke(nameof(ResetAttack), attackCooldown);
             }
         }
 
+        void LetMove() { moveStop = false; }
+
         void ResetAttack() { hasAttacked = false; }
+
+        void AlertEnemy() { isAlerted = true; }
 
         void AiFollow(Transform target)
         {
-            direction = target.position - transform.position;
-            direction.Normalize();
+            direction = (target.position - transform.position).normalized;
             rB.MovePosition(transform.position + (moveSpeed * Time.deltaTime * direction));
         }
 
