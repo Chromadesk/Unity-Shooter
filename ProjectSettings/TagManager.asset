@@ -6,11 +6,14 @@ TagManager:
   tags:
   - Enemy
   - Projectile
+  - Cover
+  - Interactable
+  - Hazard
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Interactable
   - Water
   - UI
   - Ground

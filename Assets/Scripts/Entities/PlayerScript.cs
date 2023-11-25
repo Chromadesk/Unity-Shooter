@@ -7,15 +7,6 @@ namespace Scripts
 {
     public class PlayerScript : EntityClass
     {
-        Rigidbody rB;
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            rB = GetComponent<Rigidbody>();
-        }
-
-        // Update is called once per frame
         void Update()
         {
             if (health <= 0) return;
@@ -42,7 +33,8 @@ namespace Scripts
                 Camera.main.transform.position.y, 
                 transform.position.z);
 
-            if (Input.GetButtonDown("Fire1")) { FireProjectile(); }
+            if (Input.GetButtonDown("Fire1")) FireProjectile();
+            if (Input.GetButtonDown("Interact")) Interact();
         }
 
         protected override void OnDied()

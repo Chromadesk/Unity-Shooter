@@ -12,7 +12,6 @@ namespace Scripts
     {
         [SerializeField] Transform player;
         [SerializeField] LayerMask playerLayer;
-        Rigidbody rB;
         Vector3 direction;
 
         //Attacking
@@ -25,11 +24,6 @@ namespace Scripts
         [SerializeField] float spaceBuffer = 3f;
         bool viewBlocked, moveStop;
         bool isAlerted, hasAttacked, hasBeenAlerted, inAttackRange, inSpaceBuffer = false;
-
-        void Start()
-        {
-            rB = GetComponent<Rigidbody>();
-        }
 
         private void FixedUpdate()
         {
