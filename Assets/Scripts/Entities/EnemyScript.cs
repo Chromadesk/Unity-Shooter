@@ -15,7 +15,7 @@ namespace Scripts
         Vector3 direction;
 
         //Attacking
-        [SerializeField] float attackCooldown = 3.5f;
+        [SerializeField] float attackCooldown = 1f;
         bool alreadyAttacked;
 
         //States

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Managers;
 using Interactable;
 
 namespace Scripts
@@ -21,7 +20,8 @@ namespace Scripts
             rB = GetComponent<Rigidbody>();
         }
 
-        public bool InCover { get; private set; }
+        public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
+
         public float Health { get => health; set { health = Mathf.Round(value); if (health <= 0) OnDied(); } }
 
         protected abstract void OnDied();
@@ -45,10 +45,10 @@ namespace Scripts
             if (touchedTrigger && touchedTrigger.CompareTag("Interactable")) 
             {
                 GameObject interactable = touchedTrigger.transform.parent.gameObject;
-                interactable.GetComponent<InteractableClass>().Use(gameObject);
+                interactable.GetComponent<InteractableClass>().Use(gameObject, touchedTrigger);
             }
         }
-
+        
         private void OnTriggerEnter(Collider other)
         { 
             if (other.isTrigger) touchedTrigger = other.gameObject; 

@@ -10,23 +10,23 @@ namespace Interactable
         public GameObject user;
         bool InUse = false;
 
-        public void Use(GameObject activator)
+        public void Use(GameObject activator, GameObject interactableUsed)
         {
             if (InUse)
-            { 
+            {
+                user = null;
+                InUse = false;
                 Deactivate(); 
-                user = null; 
-                InUse = false; 
             }
             else 
-            { 
-                Activate(activator);
+            {
                 user = activator;
-                InUse = true; 
+                InUse = true;
+                Activate(interactableUsed);
             }
         }
 
-        protected abstract void Activate(GameObject activator);
+        protected abstract void Activate(GameObject interactableUsed);
         protected abstract void Deactivate();
     }
 }
