@@ -13,7 +13,9 @@ namespace Scripts
         [SerializeField] protected GameObject projectile;
         [SerializeField] protected float projectileVelocity;
         protected Rigidbody rB;
-        GameObject touchedTrigger;
+        GameObject touchedInteractable;
+        public bool isStanding = true;
+        public Cover cover = null;
 
         void Start()
         {
@@ -33,27 +35,29 @@ namespace Scripts
 
         protected void FireProjectile()
         {
+            if (!isStanding) return;
             Vector3 pos = transform.position;
             GameObject bullet = Instantiate(projectile, transform.position, transform.rotation);
             bullet.GetComponent<Rigidbody>().AddForce(transform.forward * projectileVelocity, ForceMode.VelocityChange);
+            bullet.GetComponent<Projectile>().shooter = gameObject;
         }
 
         //If standing in an Interactable, will activate that trigger's function.
         //I.E: If standing in the Interactable of cover, signals that cover to enter it.
         protected void Interact()
         {
-            if (touchedTrigger && touchedTrigger.CompareTag("Interactable")) 
+            if (touchedInteractable && touchedInteractable.CompareTag("Interactable")) 
             {
-                GameObject interactable = touchedTrigger.transform.parent.gameObject;
-                interactable.GetComponent<InteractableClass>().Use(gameObject, touchedTrigger);
+                GameObject interactable = touchedInteractable.transform.parent.gameObject;
+                interactable.GetComponent<InteractableClass>().Use(gameObject, touchedInteractable);
             }
         }
         
         private void OnTriggerEnter(Collider other)
         { 
-            if (other.isTrigger) touchedTrigger = other.gameObject; 
+            if (other.isTrigger && other.gameObject.CompareTag("Interactable")) touchedInteractable = other.gameObject; 
         }
-        private void OnTriggerExit(Collider other) { touchedTrigger = null; }
+        private void OnTriggerExit(Collider other) { touchedInteractable = null; }
 
     }
 }

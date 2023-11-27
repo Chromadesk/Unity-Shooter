@@ -14,9 +14,9 @@ namespace Interactable
         {
             if (InUse)
             {
+                Deactivate();
                 user = null;
                 InUse = false;
-                Deactivate(); 
             }
             else 
             {

@@ -1,3 +1,4 @@
+using Interactable;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,6 +36,8 @@ namespace Scripts
 
             if (Input.GetButtonDown("Fire1")) FireProjectile();
             if (Input.GetButtonDown("Interact")) Interact();
+            if (Input.GetButtonDown("Fire2")) AltFire(true);
+            if (Input.GetButtonUp("Fire2")) AltFire(false);
         }
 
         protected override void OnDied()
@@ -47,6 +50,11 @@ namespace Scripts
         void ReloadLevel()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        void AltFire(bool isDown)
+        {
+            if (cover != null) cover.ChangeStandCrouch(isDown);
         }
     }
 }
