@@ -10,6 +10,10 @@ namespace Scripts
 {
     public class PlayerScript : EntityClass
     {
+        [SerializeField] AudioSource reloadSound;
+        [SerializeField] AudioSource emptySound;
+        [SerializeField] AudioSource reloadEnd;
+
         int maxAmmo = 6;
         int currentAmmo = 6;
         float reloadTime = 0.45f;
@@ -48,14 +52,22 @@ namespace Scripts
             if (Input.GetButtonDown("Reload"))
             {
                 if (currentAmmo == maxAmmo) return;
-                if (isReloading) { StopCoroutine(Reload()); isReloading = false; Debug.Log("reload stopped"); return; }
+                if (isReloading) 
+                { 
+                    StopCoroutine(Reload()); 
+                    reloadEnd.Play(); 
+                    isReloading = false; 
+                    Debug.Log("reload stopped"); 
+                    return;
+                }
                 StartCoroutine(Reload());
                 Debug.Log("start reload");
             }
                 
             if (Input.GetButtonDown("Fire1"))
             {
-                if (currentAmmo <= 0 || isReloading) return;
+                if (isReloading) return;
+                if (currentAmmo <= 0) { emptySound.Play(); return; }
                 FireProjectile();
                 RemoveAmmo();
             }
@@ -86,10 +98,14 @@ namespace Scripts
             {
                 yield return new WaitForSeconds(reloadTime);
                 if (!isReloading) yield break;
+                reloadSound.Play();
                 currentAmmo++;
                 Debug.Log("currentammo = " + currentAmmo);
             }
             
+            yield return new WaitForSeconds(reloadSound.clip.length);
+            reloadEnd.Play();
+            yield return new WaitForSeconds(reloadEnd.clip.length);
             isReloading = false;
             Debug.Log("reload over");
         }

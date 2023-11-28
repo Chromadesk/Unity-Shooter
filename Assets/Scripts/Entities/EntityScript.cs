@@ -10,8 +10,11 @@ namespace Scripts
         [SerializeField] protected string displayName;
         [SerializeField] protected float health = 100;
         [SerializeField] protected float moveSpeed = 3f;
+        [SerializeField] protected float attackDamage = 40f;
         [SerializeField] protected GameObject projectile;
+        [SerializeField] protected GameObject gunSmokeParticle;
         [SerializeField] protected float projectileVelocity;
+        [SerializeField] AudioSource fireSound;
 
         GameObject touchedInteractable;
 
@@ -40,9 +43,16 @@ namespace Scripts
         {
             if (!isStanding) return;
             Vector3 pos = transform.position;
-            GameObject bullet = Instantiate(projectile, transform.position, transform.rotation);
+            GameObject bullet = Instantiate(projectile, transform.forward * 1f + transform.position, transform.rotation);
+
             bullet.GetComponent<Rigidbody>().AddForce(transform.forward * projectileVelocity, ForceMode.VelocityChange);
             bullet.GetComponent<Projectile>().shooter = gameObject;
+            bullet.GetComponent<Projectile>().damage = attackDamage;
+
+            GameObject smoke = Instantiate(gunSmokeParticle, transform);
+            smoke.GetComponent<ParticleSystem>().Play();
+
+            fireSound.Play();
         }
 
         //If standing in an Interactable, will activate that trigger's function.

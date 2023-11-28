@@ -1,4 +1,5 @@
 using Interactable;
+using Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public GameObject shooter;
+    public float damage;
+    float initTime;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,7 +18,7 @@ public class Projectile : MonoBehaviour
         //Hitting entities
         if (hit.CompareTag("Player") || hit.CompareTag("Enemy"))
         {
-
+            hit.gameObject.GetComponent<EntityClass>().TakeDamage(damage);
         }
 
         //Hitting cover
@@ -25,5 +28,15 @@ public class Projectile : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    void Awake()
+    {
+        initTime = Time.time;
+    }
+
+    private void Update()
+    {
+        if (Time.time - initTime >= 8) Destroy(gameObject);
     }
 }
