@@ -1,6 +1,8 @@
 using Interactable;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +10,11 @@ namespace Scripts
 {
     public class PlayerScript : EntityClass
     {
+        int maxAmmo = 6;
+        int currentAmmo = 6;
+        float reloadTime = 0.45f;
+        bool isReloading = false;
+
         void Update()
         {
             if (health <= 0) return;
@@ -34,10 +41,24 @@ namespace Scripts
                 Camera.main.transform.position.y, 
                 transform.position.z);
 
-            if (Input.GetButtonDown("Fire1")) FireProjectile();
             if (Input.GetButtonDown("Interact")) Interact();
             if (Input.GetButtonDown("Fire2")) AltFire(true);
             if (Input.GetButtonUp("Fire2")) AltFire(false);
+
+            if (Input.GetButtonDown("Reload"))
+            {
+                if (currentAmmo == maxAmmo) return;
+                if (isReloading) { StopCoroutine(Reload()); isReloading = false; Debug.Log("reload stopped"); return; }
+                StartCoroutine(Reload());
+                Debug.Log("start reload");
+            }
+                
+            if (Input.GetButtonDown("Fire1"))
+            {
+                if (currentAmmo <= 0 || isReloading) return;
+                FireProjectile();
+                RemoveAmmo();
+            }
         }
 
         protected override void OnDied()
@@ -55,6 +76,32 @@ namespace Scripts
         void AltFire(bool isDown)
         {
             if (cover != null) cover.ChangeStandCrouch(isDown);
+        }
+
+        IEnumerator Reload()
+        {
+            isReloading = true;
+
+            while (currentAmmo != maxAmmo && isReloading)
+            {
+                yield return new WaitForSeconds(reloadTime);
+                if (!isReloading) yield break;
+                currentAmmo++;
+                Debug.Log("currentammo = " + currentAmmo);
+            }
+            
+            isReloading = false;
+            Debug.Log("reload over");
+        }
+
+        void AddAmmo(int count)
+        {
+            currentAmmo += 1;
+        }
+
+        void RemoveAmmo()
+        {
+            currentAmmo -= 1;
         }
     }
 }

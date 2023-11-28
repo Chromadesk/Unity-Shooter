@@ -21,8 +21,7 @@ public class Projectile : MonoBehaviour
         //Hitting cover
         if (hit.CompareTag("Cover"))
         {
-            GameObject user = hit.GetComponent<InteractableClass>().user;
-            if (user == null || user == shooter) return;
+            if (!hit.GetComponent<Cover>().isSolid) return;
         }
 
         Destroy(gameObject);

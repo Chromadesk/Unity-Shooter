@@ -9,7 +9,7 @@ namespace Interactable
     {
         float originalMoveSpeed;
         EntityClass userEntity;
-        bool isSolid = false;
+        public bool isSolid = false;
 
         protected override void Activate(GameObject interactableUsed)
         {

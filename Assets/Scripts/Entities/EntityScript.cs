@@ -12,8 +12,11 @@ namespace Scripts
         [SerializeField] protected float moveSpeed = 3f;
         [SerializeField] protected GameObject projectile;
         [SerializeField] protected float projectileVelocity;
-        protected Rigidbody rB;
+
         GameObject touchedInteractable;
+
+        protected Rigidbody rB;
+
         public bool isStanding = true;
         public Cover cover = null;
 
