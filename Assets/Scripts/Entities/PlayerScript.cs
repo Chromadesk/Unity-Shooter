@@ -59,11 +59,9 @@ namespace Scripts
                     StopCoroutine(Reload()); 
                     reloadEnd.Play(); 
                     isReloading = false; 
-                    Debug.Log("reload stopped"); 
                     return;
                 }
                 StartCoroutine(Reload());
-                Debug.Log("start reload");
             }
                 
             if (Input.GetButtonDown("Fire1"))
@@ -106,14 +104,13 @@ namespace Scripts
                 yield return new WaitForSeconds(reloadTime);
                 if (!isReloading) yield break;
                 AddAmmo();
-                Debug.Log("currentammo = " + currentAmmo);
             }
             
             yield return new WaitForSeconds(reloadSound.clip.length);
+            combatUI.SpinCylinder(reloadEnd.clip.length);
             reloadEnd.Play();
             yield return new WaitForSeconds(reloadEnd.clip.length);
             isReloading = false;
-            Debug.Log("reload over");
         }
 
         void AddAmmo()

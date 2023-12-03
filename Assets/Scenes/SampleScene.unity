@@ -1185,6 +1185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthText: {fileID: 818218805}
   cylinderObject: {fileID: 1266755057}
+  cursor: {fileID: 2800000, guid: aa9f60d6a19238f4592cd81d38d9e208, type: 3}
 --- !u!1 &1935674368
 GameObject:
   m_ObjectHideFlags: 0
@@ -1624,7 +1625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4375246177415902352, guid: 44eafed5bef760347a0ccbf16abf78f6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.35000002
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4375246177415902352, guid: 44eafed5bef760347a0ccbf16abf78f6, type: 3}
       propertyPath: m_LocalPosition.z

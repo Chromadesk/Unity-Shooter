@@ -9,23 +9,28 @@ public class CombatUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI healthText;
     [SerializeField] GameObject cylinderObject;
+    [SerializeField] Texture2D cursor;
     Image cylinder;
     List<Image> bullets = new();
     int bulletIndex = 0;
 
     private void Start()
     {
+        //Set bullet gui
         cylinder = cylinderObject.GetComponent<Image>();
         for (int i = 0; i < cylinderObject.transform.childCount; i++)
         {
             bullets.Add(cylinderObject.transform.GetChild(i).GetComponent<Image>());
-        }   
+        }
+
+        Cursor.SetCursor(cursor, new Vector2(Mathf.Floor(cursor.width / 2), Mathf.Round(cursor.height / 2)), CursorMode.Auto);
     }
 
+    int spinAt6 = 6;
     public void RemoveUIAmmo(float cooldownTime)
     {
         bullets[bulletIndex].enabled = false;
-        cylinder.rectTransform.LeanRotateZ(Mathf.Round(cylinder.rectTransform.eulerAngles.z + 60), cooldownTime - 0.05f);
+        cylinder.rectTransform.LeanRotateZ(Mathf.Floor(cylinder.rectTransform.eulerAngles.z + 60), cooldownTime - 0.05f);
         bulletIndex++;
     }
 
@@ -33,7 +38,25 @@ public class CombatUI : MonoBehaviour
     {
         bulletIndex--;
         bullets[bulletIndex].enabled = true;
-        cylinder.rectTransform.LeanRotateZ(Mathf.Round(cylinder.rectTransform.eulerAngles.z - 60), rotationTime - 0.05f);
+        cylinder.rectTransform.LeanRotateZ(Mathf.Floor(cylinder.rectTransform.eulerAngles.z - 60), rotationTime - 0.05f);
+    }
+
+    int spins = 0;
+    float spinTime;
+    public void SpinCylinder(float aSpinTime)
+    {
+        spinTime = aSpinTime / 4;
+        SpinLoop();
+    }
+    void SpinLoop()
+    {
+        float cylinderZ = cylinder.rectTransform.eulerAngles.z;
+        cylinder.rectTransform.LeanRotateZ(Mathf.Floor(cylinderZ + 180), spinTime - 0.02f); //Added to prevent overspinning
+        spins++;
+
+        if (spins < 2) { Invoke(nameof(SpinLoop), spinTime); Debug.Log("invoka"); return; }
+
+        spins = 0;
     }
 
     public void DisplayHealth(float health)
