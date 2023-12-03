@@ -19,6 +19,8 @@ namespace Scripts
         float reloadTime = 0.45f;
         bool isReloading = false;
 
+        [SerializeField] CombatUI combatUI;
+
         void Update()
         {
             if (health <= 0) return;
@@ -66,7 +68,7 @@ namespace Scripts
                 
             if (Input.GetButtonDown("Fire1"))
             {
-                if (isReloading) return;
+                if (isReloading || !isStanding) return;
                 if (currentAmmo <= 0) { emptySound.Play(); return; }
                 FireProjectile();
                 RemoveAmmo();
@@ -78,6 +80,11 @@ namespace Scripts
             GetComponent<MeshRenderer>().enabled = false;
             GetComponent<Rigidbody>().isKinematic = false;
             Invoke(nameof(ReloadLevel), 1.5f);
+        }
+
+        protected override void OnHealthSet(float value)
+        {
+            combatUI.DisplayHealth(value);
         }
 
         void ReloadLevel()
@@ -113,11 +120,13 @@ namespace Scripts
         {
             currentAmmo += 1;
             reloadSound.Play();
+            combatUI.AddUIAmmo(reloadTime);
         }
 
         void RemoveAmmo()
         {
             currentAmmo -= 1;
+            combatUI.RemoveUIAmmo(reloadTime);
         }
     }
 }

@@ -30,9 +30,11 @@ namespace Scripts
 
         public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
 
-        public float Health { get => health; set { health = Mathf.Round(value); if (health <= 0) OnDied(); } }
+        public float Health { get => health; set { health = Mathf.Round(value); if (health <= 0) OnDied(); OnHealthSet(health); } }
 
         protected abstract void OnDied();
+        protected virtual void OnHealthSet(float value) { return; }
+
 
         public void TakeDamage(float damage)
         {
