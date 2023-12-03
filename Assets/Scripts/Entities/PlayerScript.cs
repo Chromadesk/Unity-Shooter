@@ -98,8 +98,7 @@ namespace Scripts
             {
                 yield return new WaitForSeconds(reloadTime);
                 if (!isReloading) yield break;
-                reloadSound.Play();
-                currentAmmo++;
+                AddAmmo();
                 Debug.Log("currentammo = " + currentAmmo);
             }
             
@@ -110,9 +109,10 @@ namespace Scripts
             Debug.Log("reload over");
         }
 
-        void AddAmmo(int count)
+        void AddAmmo()
         {
             currentAmmo += 1;
+            reloadSound.Play();
         }
 
         void RemoveAmmo()
