@@ -14,16 +14,12 @@ namespace Scripts
         [SerializeField] LayerMask playerLayer;
         Vector3 direction;
 
-        //Attacking
-        [SerializeField] float attackCooldown = 1f;
-        bool alreadyAttacked;
-
         //States
         [SerializeField] float alertRange = 15f;
         [SerializeField] float attackRange = 10f;
         [SerializeField] float spaceBuffer = 3f;
         bool viewBlocked, moveStop;
-        bool isAlerted, hasAttacked, hasBeenAlerted, inAttackRange, inSpaceBuffer = false;
+        bool isAlerted, hasBeenAlerted, inAttackRange, inSpaceBuffer = false;
 
         private void FixedUpdate()
         {
@@ -59,15 +55,11 @@ namespace Scripts
             { 
                 FireProjectile();
                 moveStop = true;
-                hasAttacked = true;
                 Invoke(nameof(LetMove), 0.3f);
-                Invoke(nameof(ResetAttack), attackCooldown);
             }
         }
 
         void LetMove() { moveStop = false; }
-
-        void ResetAttack() { hasAttacked = false; }
 
         void AlertEnemy() { isAlerted = true; }
 

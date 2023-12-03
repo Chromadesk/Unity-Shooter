@@ -126,7 +126,7 @@ namespace Scripts
         void RemoveAmmo()
         {
             currentAmmo -= 1;
-            combatUI.RemoveUIAmmo(reloadTime);
+            combatUI.RemoveUIAmmo(attackCooldown);
         }
     }
 }

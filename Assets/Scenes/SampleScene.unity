@@ -1590,6 +1590,10 @@ PrefabInstance:
       propertyPath: combatUI
       value: 
       objectReference: {fileID: 1480158417}
+    - target: {fileID: 3924259720993981243, guid: 65cbcfd1afb187a419cb3d489ae9efc9, type: 3}
+      propertyPath: attackCooldown
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7533883884504925627, guid: 65cbcfd1afb187a419cb3d489ae9efc9, type: 3}
       propertyPath: m_Name
       value: Player

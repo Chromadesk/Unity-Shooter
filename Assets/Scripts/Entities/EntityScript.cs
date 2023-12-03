@@ -11,6 +11,7 @@ namespace Scripts
         [SerializeField] protected float health = 100;
         [SerializeField] protected float moveSpeed = 3f;
         [SerializeField] protected float attackDamage = 40f;
+        [SerializeField] protected float attackCooldown;
         [SerializeField] protected GameObject projectile;
         [SerializeField] protected GameObject gunSmokeParticle;
         [SerializeField] protected float projectileVelocity;
@@ -19,6 +20,7 @@ namespace Scripts
         GameObject touchedInteractable;
 
         protected Rigidbody rB;
+        protected bool hasAttacked = false;
 
         public bool isStanding = true;
         public Cover cover = null;
@@ -43,7 +45,7 @@ namespace Scripts
 
         protected void FireProjectile()
         {
-            if (!isStanding) return;
+            if (!isStanding || hasAttacked) return;
             Vector3 pos = transform.position;
             GameObject bullet = Instantiate(projectile, transform.forward * 1f + transform.position, transform.rotation);
 
@@ -51,11 +53,17 @@ namespace Scripts
             bullet.GetComponent<Projectile>().shooter = gameObject;
             bullet.GetComponent<Projectile>().damage = attackDamage;
 
+            //Bullet effects
             GameObject smoke = Instantiate(gunSmokeParticle, transform);
             smoke.GetComponent<ParticleSystem>().Play();
-
             fireSound.Play();
+
+            //Start cooldown
+            hasAttacked = true;
+            Invoke(nameof(ResetAttack), attackCooldown);
         }
+
+        void ResetAttack() { hasAttacked = false; }
 
         //If standing in an Interactable, will activate that trigger's function.
         //I.E: If standing in the Interactable of cover, signals that cover to enter it.

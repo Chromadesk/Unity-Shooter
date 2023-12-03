@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DigitalRuby.Tween;
 
 public class CombatUI : MonoBehaviour
 {
@@ -12,6 +11,7 @@ public class CombatUI : MonoBehaviour
     [SerializeField] GameObject cylinderObject;
     Image cylinder;
     List<Image> bullets = new();
+    int bulletIndex = 0;
 
     private void Start()
     {
@@ -22,11 +22,10 @@ public class CombatUI : MonoBehaviour
         }   
     }
 
-    int bulletIndex = 0;
-    public void RemoveUIAmmo(float rotationTime)
+    public void RemoveUIAmmo(float cooldownTime)
     {
         bullets[bulletIndex].enabled = false;
-        cylinder.rectTransform.eulerAngles = new Vector3(0, 0, Mathf.Round(cylinder.rectTransform.eulerAngles.z + 60));
+        cylinder.rectTransform.LeanRotateZ(Mathf.Round(cylinder.rectTransform.eulerAngles.z + 60), cooldownTime - 0.05f);
         bulletIndex++;
     }
 
@@ -34,8 +33,9 @@ public class CombatUI : MonoBehaviour
     {
         bulletIndex--;
         bullets[bulletIndex].enabled = true;
-        cylinder.rectTransform.eulerAngles = new Vector3(0, 0, Mathf.Round(cylinder.rectTransform.eulerAngles.z - 60));
+        cylinder.rectTransform.LeanRotateZ(Mathf.Round(cylinder.rectTransform.eulerAngles.z - 60), rotationTime - 0.05f);
     }
+
     public void DisplayHealth(float health)
     {
         if (health >= 0) healthText.text = health.ToString();
