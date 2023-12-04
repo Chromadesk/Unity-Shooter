@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Interactable;
+using UnityEditorInternal;
 
 namespace Scripts
 {
@@ -46,12 +47,16 @@ namespace Scripts
         protected void FireProjectile()
         {
             if (!isStanding || hasAttacked) return;
-            Vector3 pos = transform.position;
-            GameObject bullet = Instantiate(projectile, transform.forward * 1f + transform.position, transform.rotation);
-
-            bullet.GetComponent<Rigidbody>().AddForce(transform.forward * projectileVelocity, ForceMode.VelocityChange);
-            bullet.GetComponent<Projectile>().shooter = gameObject;
-            bullet.GetComponent<Projectile>().damage = attackDamage;
+            
+            //If the shooter is too close to a wall, don't spawn a bullet.
+            if (!Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, projectile.transform.localScale.z))
+            {
+                Vector3 pos = transform.position;
+                GameObject bullet = Instantiate(projectile, transform.forward * 1f + transform.position, transform.rotation);
+                bullet.GetComponent<Rigidbody>().AddForce(transform.forward * projectileVelocity, ForceMode.VelocityChange);
+                bullet.GetComponent<Projectile>().shooter = gameObject;
+                bullet.GetComponent<Projectile>().damage = attackDamage;
+            }
 
             //Bullet effects
             GameObject smoke = Instantiate(gunSmokeParticle, transform);
@@ -71,16 +76,22 @@ namespace Scripts
         {
             if (touchedInteractable && touchedInteractable.CompareTag("Interactable")) 
             {
+                Debug.Log("im on it");
                 GameObject interactable = touchedInteractable.transform.parent.gameObject;
                 interactable.GetComponent<InteractableClass>().Use(gameObject, touchedInteractable);
             }
         }
-        
+
+        int count = 0;
         private void OnTriggerEnter(Collider other)
         { 
-            if (other.isTrigger && other.gameObject.CompareTag("Interactable")) touchedInteractable = other.gameObject; 
+            if (other.isTrigger && other.gameObject.CompareTag("Interactable")) touchedInteractable = other.gameObject;
         }
-        private void OnTriggerExit(Collider other) { touchedInteractable = null; }
+        private void OnTriggerExit(Collider other) 
+        {
+            if (cover != null) return;
+            touchedInteractable = null; 
+        }
 
     }
 }

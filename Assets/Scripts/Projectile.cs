@@ -10,21 +10,15 @@ public class Projectile : MonoBehaviour
     public float damage;
     float initTime;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        GameObject hit = other.gameObject;
+        GameObject hit = collision.gameObject;
         if (hit == null || hit.CompareTag("Interactable") || hit.gameObject == shooter) return;
 
         //Hitting entities
         if (hit.CompareTag("Player") || hit.CompareTag("Enemy"))
         {
             hit.gameObject.GetComponent<EntityClass>().TakeDamage(damage);
-        }
-
-        //Hitting cover
-        if (hit.CompareTag("Cover"))
-        {
-            if (!hit.GetComponent<Cover>().isSolid) return;
         }
 
         Destroy(gameObject);

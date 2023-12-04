@@ -26,7 +26,6 @@ public class CombatUI : MonoBehaviour
         Cursor.SetCursor(cursor, new Vector2(Mathf.Floor(cursor.width / 2), Mathf.Round(cursor.height / 2)), CursorMode.Auto);
     }
 
-    int spinAt6 = 6;
     public void RemoveUIAmmo(float cooldownTime)
     {
         bullets[bulletIndex].enabled = false;
@@ -54,7 +53,7 @@ public class CombatUI : MonoBehaviour
         cylinder.rectTransform.LeanRotateZ(Mathf.Floor(cylinderZ + 180), spinTime - 0.02f); //Added to prevent overspinning
         spins++;
 
-        if (spins < 2) { Invoke(nameof(SpinLoop), spinTime); Debug.Log("invoka"); return; }
+        if (spins < 2) { Invoke(nameof(SpinLoop), spinTime); return; }
 
         spins = 0;
     }

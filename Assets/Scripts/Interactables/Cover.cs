@@ -9,7 +9,6 @@ namespace Interactable
     {
         float originalMoveSpeed;
         EntityClass userEntity;
-        public bool isSolid = false;
 
         protected override void Activate(GameObject interactableUsed)
         {
@@ -22,7 +21,7 @@ namespace Interactable
                 user.transform.position.y / 1.5f,
                 interactableUsed.transform.position.z);
 
-            isSolid = true;
+            gameObject.layer = LayerMask.NameToLayer("Wall");
             userEntity.cover = this;
             userEntity.isStanding = false;
         }
@@ -41,7 +40,7 @@ namespace Interactable
                 user.transform.position.y / 1.5f,
                 user.transform.position.z);
 
-            isSolid = true;
+            gameObject.layer = LayerMask.NameToLayer("Wall");
             userEntity.isStanding = false;
         }
 
@@ -52,7 +51,7 @@ namespace Interactable
                 user.transform.position.y * 1.5f,
                 user.transform.position.z);
 
-            isSolid = false;
+            gameObject.layer = LayerMask.NameToLayer("BulletIgnore");
             userEntity.isStanding = true;
         }
 
