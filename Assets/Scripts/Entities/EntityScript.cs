@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Interactable;
 using UnityEditorInternal;
+using System;
 
 namespace Scripts
 {
@@ -23,11 +24,15 @@ namespace Scripts
         protected Rigidbody rB;
         protected bool hasAttacked = false;
 
-        public bool isStanding = true;
-        public Cover cover = null;
+        [NonSerialized] public bool isStanding = true;
+        [NonSerialized] public Cover cover = null;
+        [NonSerialized] public int id;
+        static int nextId = 0;
 
         void Start()
         {
+            id = nextId;
+            nextId++;
             rB = GetComponent<Rigidbody>();
         }
 
@@ -44,7 +49,7 @@ namespace Scripts
             if (damageDebounce) return;
             Health -= damage;
             damageDebounce = true;
-            Invoke(nameof(ResetDamageDebounce), 0.05f);
+            Invoke(nameof(ResetDamageDebounce), 0.01f);
         }
         void ResetDamageDebounce() { damageDebounce = false; }
 

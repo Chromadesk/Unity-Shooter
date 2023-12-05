@@ -520,7 +520,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 358252915}
   m_CullTransparentMesh: 1
---- !u!1001 &588618056
+--- !u!1001 &515765836
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -535,7 +535,15 @@ PrefabInstance:
     - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
       propertyPath: fireSound
       value: 
-      objectReference: {fileID: 588618057}
+      objectReference: {fileID: 515765837}
+    - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: alertRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: attackRange
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
       propertyPath: gunSmokeParticle
       value: 
@@ -555,6 +563,92 @@ PrefabInstance:
     - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
       propertyPath: m_LocalPosition.z
       value: -3.0000124
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7548616013343171622, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_Name
+      value: Enemy (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+--- !u!82 &515765837 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4361955411869932588, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+  m_PrefabInstance: {fileID: 515765836}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &588618056
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1480158414}
+    - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: fireSound
+      value: 
+      objectReference: {fileID: 588618057}
+    - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: alertRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: attackRange
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: gunSmokeParticle
+      value: 
+      objectReference: {fileID: 1490231147973860628, guid: bde8f0a9ea6251e4b9a0cdf326be3683, type: 3}
+    - target: {fileID: 4361955411869932588, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_Volume
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -24
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -19.000011
       objectReference: {fileID: 0}
     - target: {fileID: 5545436276024668299, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1761,6 +1855,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8157452261727123099}
     - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: alertRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: attackRange
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
       propertyPath: gunSmokeParticle
       value: 
       objectReference: {fileID: 1490231147973860628, guid: bde8f0a9ea6251e4b9a0cdf326be3683, type: 3}
@@ -1832,6 +1934,7 @@ SceneRoots:
   - {fileID: 806378878}
   - {fileID: 8157452261727123098}
   - {fileID: 588618056}
+  - {fileID: 515765836}
   - {fileID: 4895825177805855749}
   - {fileID: 347330865}
   - {fileID: 173435614}
