@@ -20,6 +20,7 @@ namespace Scripts
         [SerializeField] float spaceBuffer = 3f;
         bool viewBlocked, moveStop;
         bool isAlerted, hasBeenAlerted, inAttackRange, inSpaceBuffer = false;
+        float timePlayerSeen;
 
         private void FixedUpdate()
         {
@@ -41,7 +42,7 @@ namespace Scripts
                     hasBeenAlerted = true;
                     rB.velocity = new Vector3(0, 1.5f, 0);
                     transform.LookAt(player);
-                    Invoke(nameof(AlertEnemy), 0.5f);
+                    Invoke(nameof(ResetIsAlerted), 0.5f);
                 }
                 return;
             }
@@ -55,13 +56,13 @@ namespace Scripts
             { 
                 FireProjectile();
                 moveStop = true;
-                Invoke(nameof(LetMove), 0.3f);
+                Invoke(nameof(ResetMoveStop), 0.3f);
             }
         }
 
-        void LetMove() { moveStop = false; }
+        void ResetMoveStop() { moveStop = false; }
 
-        void AlertEnemy() { isAlerted = true; }
+        void ResetIsAlerted() { isAlerted = true; }
 
         void AiFollow(Transform target)
         {

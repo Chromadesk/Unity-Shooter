@@ -44,9 +44,9 @@ namespace Scripts
             if (damageDebounce) return;
             Health -= damage;
             damageDebounce = true;
-            Invoke(nameof(resetDamageDebounce), 0.05f);
+            Invoke(nameof(ResetDamageDebounce), 0.05f);
         }
-        void resetDamageDebounce() { damageDebounce = false; }
+        void ResetDamageDebounce() { damageDebounce = false; }
 
         protected void FireProjectile()
         {
@@ -69,10 +69,10 @@ namespace Scripts
 
             //Start cooldown
             hasAttacked = true;
-            Invoke(nameof(ResetAttack), attackCooldown);
+            Invoke(nameof(ResetHasAttacked), attackCooldown);
         }
 
-        void ResetAttack() { hasAttacked = false; }
+        void ResetHasAttacked() { hasAttacked = false; }
 
         //If standing in an Interactable, will activate that trigger's function.
         //I.E: If standing in the Interactable of cover, signals that cover to enter it.
