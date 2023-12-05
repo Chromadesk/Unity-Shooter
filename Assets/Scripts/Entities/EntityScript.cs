@@ -36,13 +36,17 @@ namespace Scripts
         public float Health { get => health; set { health = Mathf.Round(value); if (health <= 0) OnDied(); OnHealthSet(health); } }
 
         protected abstract void OnDied();
-        protected virtual void OnHealthSet(float value) { return; }
+        protected virtual void OnHealthSet(float value) { }
 
-
+        bool damageDebounce = false;
         public void TakeDamage(float damage)
         {
+            if (damageDebounce) return;
             Health -= damage;
+            damageDebounce = true;
+            Invoke(nameof(resetDamageDebounce), 0.05f);
         }
+        void resetDamageDebounce() { damageDebounce = false; }
 
         protected void FireProjectile()
         {
@@ -82,7 +86,6 @@ namespace Scripts
             }
         }
 
-        int count = 0;
         private void OnTriggerEnter(Collider other)
         { 
             if (other.isTrigger && other.gameObject.CompareTag("Interactable")) touchedInteractable = other.gameObject;

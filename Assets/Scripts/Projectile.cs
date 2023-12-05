@@ -18,7 +18,7 @@ public class Projectile : MonoBehaviour
         //Hitting entities
         if (hit.CompareTag("Player") || hit.CompareTag("Enemy"))
         {
-            hit.gameObject.GetComponent<EntityClass>().TakeDamage(damage);
+            hit.GetComponent<EntityClass>().TakeDamage(damage);
         }
 
         Destroy(gameObject);
