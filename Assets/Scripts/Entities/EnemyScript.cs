@@ -17,7 +17,7 @@ namespace Scripts
         [SerializeField] float alertRange = 10f;
         [SerializeField] float attackRange = 6f;
         [SerializeField] float spaceBuffer = 3f;
-        bool isAlerted, hasJumped = false;
+        bool isAlerted, hasJumped, canSeePlayer = false;
         RaycastHit[] nearbyAI = new RaycastHit[10];
         RaycastHit rayToPlayer;
 
@@ -34,10 +34,11 @@ namespace Scripts
         void DecideAction()
         {
             _ = Physics.Raycast(transform.position, (player.position - transform.position).normalized, out rayToPlayer, alertRange);
+            if (rayToPlayer.collider && rayToPlayer.collider.gameObject.CompareTag("Player")) canSeePlayer = true; else canSeePlayer = false;
 
             //When the AI sees the player, they will jump and look at them for 0.5s, then stay alerted forever.
             if (!isAlerted) { 
-                if (!hasJumped && rayToPlayer.collider && rayToPlayer.collider.gameObject.CompareTag("Player"))
+                if (!hasJumped && canSeePlayer)
                 {
                     AlertAI();
                     AlertNearbyAI();
@@ -79,12 +80,9 @@ namespace Scripts
 
         void TryAttackOrFollow()
         {
-            if (rayToPlayer.distance > spaceBuffer && !agent.isStopped)
-            {
-                agent.SetDestination(player.position);
-            }
+            if ((!canSeePlayer || rayToPlayer.distance > spaceBuffer) && !agent.isStopped) { agent.SetDestination(player.position); }
 
-            if (rayToPlayer.distance <= attackRange && !hasAttacked)
+            if (rayToPlayer.distance <= attackRange && !hasAttacked && canSeePlayer)
             {
                 print("tried attack");
                 FireProjectile();
