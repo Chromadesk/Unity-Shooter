@@ -17,8 +17,9 @@ namespace Scripts
         [SerializeField] float alertRange = 10f;
         [SerializeField] float attackRange = 6f;
         [SerializeField] float spaceBuffer = 3f;
-        bool moveStop, isAlerted, hasJumped, inAttackRange, inSpaceBuffer = false;
+        bool isAlerted, hasJumped = false;
         RaycastHit[] nearbyAI = new RaycastHit[10];
+        RaycastHit rayToPlayer;
 
         private void FixedUpdate()
         {
@@ -32,11 +33,11 @@ namespace Scripts
 
         void DecideAction()
         {
-            _ = Physics.Raycast(transform.position, (player.position - transform.position).normalized, out RaycastHit hit, alertRange);
+            _ = Physics.Raycast(transform.position, (player.position - transform.position).normalized, out rayToPlayer, alertRange);
 
             //When the AI sees the player, they will jump and look at them for 0.5s, then stay alerted forever.
             if (!isAlerted) { 
-                if (!hasJumped && hit.collider && hit.collider.gameObject.CompareTag("Player"))
+                if (!hasJumped && rayToPlayer.collider && rayToPlayer.collider.gameObject.CompareTag("Player"))
                 {
                     AlertAI();
                     AlertNearbyAI();
@@ -70,26 +71,30 @@ namespace Scripts
             foreach (RaycastHit hit in nearbyAI) 
             {
                 if (hit.collider == null) return;
-                hit.collider.gameObject.SendMessage("AlertAI");
+
+                hit.collider.gameObject.SendMessage("AlertAI", SendMessageOptions.DontRequireReceiver);
+                
             }
         }
 
         void TryAttackOrFollow()
         {
-            inAttackRange = Physics.CheckSphere(transform.position, attackRange, LayerMask.NameToLayer("Player"));
-            inSpaceBuffer = Physics.CheckSphere(transform.position, spaceBuffer, LayerMask.NameToLayer("Player"));
-
-            if (!inSpaceBuffer && !moveStop) agent.SetDestination(player.position);
-
-            if (inAttackRange && !hasAttacked)
+            if (rayToPlayer.distance > spaceBuffer && !agent.isStopped)
             {
+                agent.SetDestination(player.position);
+            }
+
+            if (rayToPlayer.distance <= attackRange && !hasAttacked)
+            {
+                print("tried attack");
                 FireProjectile();
-                moveStop = true;
+                agent.isStopped = true;
+                agent.velocity = Vector3.zero;
                 Invoke(nameof(ResetMoveStop), 0.3f);
             }
         }
 
-        void ResetMoveStop() { moveStop = false; }
+        void ResetMoveStop() { agent.isStopped = false; }
 
         void ResetIsAlerted() { isAlerted = true; }
 
