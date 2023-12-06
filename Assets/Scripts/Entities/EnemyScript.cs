@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.EventSystems;
 using static UnityEngine.GraphicsBuffer;
 
 namespace Scripts
@@ -11,7 +8,8 @@ namespace Scripts
     public class EnemyScript : EntityClass
     {
         [SerializeField] Transform player;
-        [SerializeField] LayerMask playerLayer;
+        [SerializeField] NavMeshAgent agent;
+
         Vector3 direction;
         float timePlayerSeen;
 
@@ -78,9 +76,10 @@ namespace Scripts
 
         void TryAttackOrFollow()
         {
-            inAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
-            inSpaceBuffer = Physics.CheckSphere(transform.position, spaceBuffer, playerLayer);
-            if (!inSpaceBuffer && !moveStop) AiFollow(player);
+            inAttackRange = Physics.CheckSphere(transform.position, attackRange, LayerMask.NameToLayer("Player"));
+            inSpaceBuffer = Physics.CheckSphere(transform.position, spaceBuffer, LayerMask.NameToLayer("Player"));
+
+            if (!inSpaceBuffer && !moveStop) agent.SetDestination(player.position);
 
             if (inAttackRange && !hasAttacked)
             {
@@ -93,12 +92,6 @@ namespace Scripts
         void ResetMoveStop() { moveStop = false; }
 
         void ResetIsAlerted() { isAlerted = true; }
-
-        void AiFollow(Transform target)
-        {
-            direction = (target.position - transform.position).normalized;
-            rB.MovePosition(transform.position + (moveSpeed * Time.deltaTime * direction));
-        }
 
         void FindCover()
         {
