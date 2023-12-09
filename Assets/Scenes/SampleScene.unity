@@ -1819,6 +1819,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2542180849796393124, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4258571779346591855, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
       propertyPath: agent
       value: 

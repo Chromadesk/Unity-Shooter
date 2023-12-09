@@ -10,9 +10,6 @@ namespace Scripts
         [SerializeField] Transform player;
         [SerializeField] NavMeshAgent agent;
 
-        Vector3 direction;
-        float timePlayerSeen;
-
         //States
         [SerializeField] float alertRange = 10f;
         [SerializeField] float attackRange = 6f;
@@ -33,7 +30,14 @@ namespace Scripts
 
         void DecideAction()
         {
-            _ = Physics.Raycast(transform.position, (player.position - transform.position).normalized, out rayToPlayer, alertRange);
+            _ = Physics.BoxCast(
+                transform.position,
+                new Vector3(projScale.x / 2, projScale.y / 2, projScale.z / 2), 
+                (player.position - transform.position).normalized,
+                out rayToPlayer,
+                transform.rotation,
+                alertRange);
+
             if (rayToPlayer.collider && rayToPlayer.collider.gameObject.CompareTag("Player")) canSeePlayer = true; else canSeePlayer = false;
 
             //When the AI sees the player, they will jump and look at them for 0.5s, then stay alerted forever.
@@ -55,15 +59,8 @@ namespace Scripts
         {
             if (isAlerted) return;
 
-            DoAlertJump();
+            rB.isKinematic = true;
             Invoke(nameof(ResetIsAlerted), 0.5f);
-        }
-
-        void DoAlertJump()
-        {
-            if (hasJumped) return; else hasJumped = true;
-            rB.velocity = new Vector3(0, 1.5f, 0);
-            transform.LookAt(player);
         }
 
         void AlertNearbyAI()
@@ -99,6 +96,11 @@ namespace Scripts
         void FindCover()
         {
             //TODO
+        }
+
+        protected override void OnHealthSet(float health)
+        {
+            if (!isAlerted) { AlertAI(); AlertNearbyAI(); }
         }
     }
 } 

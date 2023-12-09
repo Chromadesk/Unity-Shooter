@@ -14,7 +14,7 @@ namespace Scripts
         [SerializeField] protected float moveSpeed = 3f;
         [SerializeField] protected float attackDamage = 40f;
         [SerializeField] protected float attackCooldown;
-        [SerializeField] protected GameObject projectile;
+        [SerializeField] GameObject projectile;
         [SerializeField] protected GameObject gunSmokeParticle;
         [SerializeField] protected float projectileVelocity;
         [SerializeField] AudioSource fireSound;
@@ -23,6 +23,7 @@ namespace Scripts
 
         protected Rigidbody rB;
         protected bool hasAttacked = false;
+        protected Vector3 projScale;
 
         [NonSerialized] public bool isStanding = true;
         [NonSerialized] public Cover cover = null;
@@ -33,6 +34,9 @@ namespace Scripts
         {
             id = nextId;
             nextId++;
+
+            projScale = projectile.transform.localScale;
+
             rB = GetComponent<Rigidbody>();
         }
 
@@ -58,7 +62,7 @@ namespace Scripts
             if (!isStanding || hasAttacked) return;
             
             //If the shooter is too close to a wall, don't spawn a bullet.
-            if (!Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, projectile.transform.localScale.z))
+            if (!Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, projScale.z))
             {
                 Vector3 pos = transform.position;
                 GameObject bullet = Instantiate(projectile, transform.forward * 1f + transform.position, transform.rotation);

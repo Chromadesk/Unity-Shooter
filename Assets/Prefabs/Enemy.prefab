@@ -229,7 +229,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -258,7 +258,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -282,16 +282,13 @@ MonoBehaviour:
   health: 100
   moveSpeed: 3
   attackDamage: 40
+  attackCooldown: 1
   projectile: {fileID: 508557508280956100, guid: 4477ed0a8587d7f44846479283a6e94b, type: 3}
+  gunSmokeParticle: {fileID: 0}
   projectileVelocity: 10
   fireSound: {fileID: 0}
-  isStanding: 1
-  cover: {fileID: 0}
   player: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  attackCooldown: 1
+  agent: {fileID: 0}
   alertRange: 15
   attackRange: 10
   spaceBuffer: 3
