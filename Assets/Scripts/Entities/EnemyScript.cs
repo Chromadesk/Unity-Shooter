@@ -81,7 +81,6 @@ namespace Scripts
 
             if (rayToPlayer.distance <= attackRange && !hasAttacked && canSeePlayer)
             {
-                print("tried attack");
                 FireProjectile();
                 agent.isStopped = true;
                 agent.velocity = Vector3.zero;

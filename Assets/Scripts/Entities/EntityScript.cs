@@ -89,7 +89,6 @@ namespace Scripts
         {
             if (touchedInteractable && touchedInteractable.CompareTag("Interactable")) 
             {
-                Debug.Log("im on it");
                 GameObject interactable = touchedInteractable.transform.parent.gameObject;
                 interactable.GetComponent<InteractableClass>().Use(gameObject, touchedInteractable);
             }
