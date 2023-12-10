@@ -1,9 +1,13 @@
+using Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class Canteen : MonoBehaviour
 {
+    [SerializeField] PlayerScript player;
+
     int maxCharge = 40;
     int maxOverCharge = 80;
     int currentCharge = 0;
@@ -11,17 +15,25 @@ public class Canteen : MonoBehaviour
     float damageRecievedCharge = 0.1f; //Percentage
     float cooldown = 5;
     bool onCooldown = false;
-    float decayTime = Time.time;
+    float decayTime;
+
+    private void Start()
+    {
+        decayTime = Time.time;
+    }
 
     private void Update()
     {
         DecayOverharge();
     }
 
-    public void Use(ref float healthVariable)
+    public void Use()
     {
         if (currentCharge <= 0 || onCooldown) return;
-        healthVariable = currentCharge;
+
+        if (player.Health + currentCharge > player.maxHealth) player.Health = player.maxHealth; 
+        else player.Health += currentCharge;
+
         currentCharge = 0;
         onCooldown = true;
         Invoke(nameof(ResetCooldown), cooldown);

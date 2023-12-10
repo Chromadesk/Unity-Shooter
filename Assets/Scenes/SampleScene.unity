@@ -1210,6 +1210,30 @@ MonoBehaviour:
   healthText: {fileID: 818218805}
   cylinderObject: {fileID: 1266755057}
   cursor: {fileID: 2800000, guid: aa9f60d6a19238f4592cd81d38d9e208, type: 3}
+--- !u!114 &1480158418 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3924259720993981243, guid: 65cbcfd1afb187a419cb3d489ae9efc9, type: 3}
+  m_PrefabInstance: {fileID: 3302593722112322018}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480158410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58469e3078e89254da17bb3c1c2140ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1480158423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480158410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c4adef3d83994b4db68e3da8d59c80d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1480158418}
 --- !u!1 &1699059563 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7548616013343171622, guid: fac20dcaf3169e449a14defa2432a0d7, type: 3}
@@ -1715,6 +1739,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3924259720993981243, guid: 65cbcfd1afb187a419cb3d489ae9efc9, type: 3}
+      propertyPath: canteen
+      value: 
+      objectReference: {fileID: 1480158423}
+    - target: {fileID: 3924259720993981243, guid: 65cbcfd1afb187a419cb3d489ae9efc9, type: 3}
       propertyPath: combatUI
       value: 
       objectReference: {fileID: 1480158417}
@@ -1733,6 +1761,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7533883884504925627, guid: 65cbcfd1afb187a419cb3d489ae9efc9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1480158417}
+    - targetCorrespondingSourceObject: {fileID: 7533883884504925627, guid: 65cbcfd1afb187a419cb3d489ae9efc9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1480158423}
   m_SourcePrefab: {fileID: 100100000, guid: 65cbcfd1afb187a419cb3d489ae9efc9, type: 3}
 --- !u!1001 &4895825177805855749
 PrefabInstance:

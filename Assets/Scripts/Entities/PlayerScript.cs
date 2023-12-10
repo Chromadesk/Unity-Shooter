@@ -10,20 +10,25 @@ namespace Scripts
 {
     public class PlayerScript : EntityClass
     {
-        [SerializeField] AudioSource reloadSound;
-        [SerializeField] AudioSource emptySound;
-        [SerializeField] AudioSource reloadEnd;
-
         int maxAmmo = 6;
         int currentAmmo = 6;
         float reloadTime = 0.45f;
         bool isReloading = false;
 
+        //Sounds
+        [SerializeField] AudioSource reloadSound;
+        [SerializeField] AudioSource emptySound;
+        [SerializeField] AudioSource reloadEnd;
+
+        //Abilities
+        [SerializeField] Canteen canteen;
+
+        //UI
         [SerializeField] CombatUI combatUI;
 
         void Update()
         {
-            if (health <= 0) return;
+            if (Health <= 0) return;
             FaceMouse();
             RunControls();
         }
@@ -47,6 +52,7 @@ namespace Scripts
                 Camera.main.transform.position.y, 
                 transform.position.z);
 
+            if (Input.GetKeyDown(KeyCode.F)) canteen.Use();
             if (Input.GetButtonDown("Interact")) Interact();
             if (Input.GetButtonDown("Fire2")) AltFire(true);
             if (Input.GetButtonUp("Fire2")) AltFire(false);
@@ -125,5 +131,8 @@ namespace Scripts
             currentAmmo -= 1;
             combatUI.RemoveUIAmmo(attackCooldown);
         }
+
+        public override void OnDamageDealt(float damage) { canteen.Charge(damage, true); }
+        protected override void OnDamageRecieved(float damage) { canteen.Charge(damage, false); }
     }
 }

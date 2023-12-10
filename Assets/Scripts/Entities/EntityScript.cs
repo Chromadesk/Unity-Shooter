@@ -11,6 +11,7 @@ namespace Scripts
     {
         [SerializeField] protected string displayName;
         [SerializeField] protected float health = 100;
+        [SerializeField] public readonly float maxHealth = 100;
         [SerializeField] protected float moveSpeed = 3f;
         [SerializeField] protected float attackDamage = 40f;
         [SerializeField] protected float attackCooldown;
@@ -29,6 +30,20 @@ namespace Scripts
         [NonSerialized] public Cover cover = null;
         [NonSerialized] public int id;
         static int nextId = 0;
+        bool damageDebounce = false;
+
+        public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
+
+        public float Health 
+        {
+            get => health;
+            set 
+            { 
+                health = Mathf.Round(value); 
+                if (health <= 0) OnDied(); 
+                OnHealthSet(health);
+            } 
+        }        
 
         void Start()
         {
@@ -40,19 +55,14 @@ namespace Scripts
             rB = GetComponent<Rigidbody>();
         }
 
-        public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
-
-        public float Health { get => health; set { health = Mathf.Round(value); if (health <= 0) OnDied(); OnHealthSet(health); } }
-
-        bool damageDebounce = false;
         public void TakeDamage(float damage)
         {
             if (damageDebounce) return;
             Health -= damage;
             damageDebounce = true;
+            OnDamageRecieved(damage);
             Invoke(nameof(ResetDamageDebounce), 0.01f);
         }
-        void ResetDamageDebounce() { damageDebounce = false; }
 
         protected void FireProjectile()
         {
@@ -78,8 +88,6 @@ namespace Scripts
             Invoke(nameof(ResetHasAttacked), attackCooldown);
         }
 
-        void ResetHasAttacked() { hasAttacked = false; }
-
         //If standing in an Interactable, will activate that trigger's function.
         //I.E: If standing in the Interactable of cover, signals that cover to enter it.
         protected void Interact()
@@ -103,6 +111,10 @@ namespace Scripts
 
         protected abstract void OnDied();
         protected virtual void OnHealthSet(float value) { }
+        protected virtual void OnDamageRecieved(float value) { }
+        public virtual void OnDamageDealt(float value) { }
+        void ResetHasAttacked() { hasAttacked = false; }
+        void ResetDamageDebounce() { damageDebounce = false; }
 
     }
 }

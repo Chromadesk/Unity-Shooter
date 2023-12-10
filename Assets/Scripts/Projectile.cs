@@ -18,7 +18,11 @@ public class Projectile : MonoBehaviour
         //Hitting entities
         if (hit.CompareTag("Player") || hit.CompareTag("Enemy"))
         {
+            //This will have issues later with different resistances. Will need to get the reciever to
+            //say how much damage it took instead of the projectile saying how much damage it was supposed to do.
+
             hit.GetComponent<EntityClass>().TakeDamage(damage);
+            shooter.GetComponent<EntityClass>().OnDamageDealt(damage);
         }
 
         Destroy(gameObject);
