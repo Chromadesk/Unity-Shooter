@@ -44,9 +44,6 @@ namespace Scripts
 
         public float Health { get => health; set { health = Mathf.Round(value); if (health <= 0) OnDied(); OnHealthSet(health); } }
 
-        protected abstract void OnDied();
-        protected virtual void OnHealthSet(float value) { }
-
         bool damageDebounce = false;
         public void TakeDamage(float damage)
         {
@@ -103,6 +100,9 @@ namespace Scripts
             if (cover != null) return;
             touchedInteractable = null; 
         }
+
+        protected abstract void OnDied();
+        protected virtual void OnHealthSet(float value) { }
 
     }
 }
