@@ -280,12 +280,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Bandit
   health: 100
-  moveSpeed: 3
+  moveSpeed: 4
   attackDamage: 40
   attackCooldown: 1
   projectile: {fileID: 508557508280956100, guid: 4477ed0a8587d7f44846479283a6e94b, type: 3}
   gunSmokeParticle: {fileID: 0}
-  projectileVelocity: 10
+  projectileVelocity: 20
   fireSound: {fileID: 0}
   player: {fileID: 0}
   agent: {fileID: 0}

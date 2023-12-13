@@ -8,12 +8,12 @@ public class Canteen : MonoBehaviour
 {
     [SerializeField] PlayerScript player;
 
-    int maxCharge = 40;
-    int maxOverCharge = 80;
-    int currentCharge = 0;
-    float damageDealtCharge = 0.1f; //Percentage
-    float damageRecievedCharge = 0.1f; //Percentage
-    float cooldown = 5;
+    public readonly int maxCharge = 40;
+    readonly int maxOverCharge = 80;
+    public int currentCharge = 0;
+    readonly float damageDealtCharge = 0.1f; //Percentage
+    readonly float damageRecievedCharge = 0.1f; //Percentage
+    readonly float cooldown = 5;
     bool onCooldown = false;
     float decayTime;
 
@@ -54,8 +54,9 @@ public class Canteen : MonoBehaviour
 
     void DecayOverharge()
     {
-        if (currentCharge <= maxCharge || Time.time - decayTime < 1) return;
+        if (currentCharge <= maxCharge || Time.time - decayTime < 2) return;
         currentCharge -= 1;
+        decayTime = Time.time;
     }
 
     void ResetCooldown() { onCooldown = false; }

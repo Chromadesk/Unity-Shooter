@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class CombatUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI healthText;
+    [SerializeField] TextMeshProUGUI canteenText;
     [SerializeField] GameObject cylinderObject;
     [SerializeField] Texture2D cursor;
     Image cylinder;
@@ -62,5 +63,14 @@ public class CombatUI : MonoBehaviour
     {
         if (health >= 0) healthText.text = health.ToString();
         else healthText.text = "0";
+    }
+
+    public void DisplayCanteen(float charge, float maxCharge)
+    {
+        if (charge >= 0) canteenText.text = charge.ToString();
+        else canteenText.text = "0";
+
+        if (charge > maxCharge) canteenText.color = new Color(255, 252, 0, 255);
+        else canteenText.color = new Color(255, 180, 84, 255);
     }
 }

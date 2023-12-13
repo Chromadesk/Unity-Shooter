@@ -31,6 +31,7 @@ namespace Scripts
             if (Health <= 0) return;
             FaceMouse();
             RunControls();
+            combatUI.DisplayCanteen(canteen.currentCharge, canteen.maxCharge);
         }
 
         void FaceMouse()
