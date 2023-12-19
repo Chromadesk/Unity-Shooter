@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 5723578681784039221}
   - component: {fileID: 4204423788786037127}
   - component: {fileID: 5906609307111501067}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Cover
   m_TagString: Cover
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4375246177415902352
 Transform:
@@ -28,15 +28,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1924961450178557873}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.1500177, y: 0.35000002, z: -1.5000057}
-  m_LocalScale: {x: 0.3, y: 0.55, z: 2}
+  m_LocalRotation: {x: -0, y: -0.9999939, z: -0, w: 0.0034936662}
+  m_LocalPosition: {x: -5.7274265, y: -7.525, z: 9.560152}
+  m_LocalScale: {x: 0.29999992, y: 0.55, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2257036040172429637}
   - {fileID: 3429233047349427078}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -89.6, z: 0}
 --- !u!33 &966472558190996616
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -100,7 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   user: {fileID: 0}
-  isSolid: 0
 --- !u!65 &5906609307111501067
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -139,7 +138,7 @@ GameObject:
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2257036040172429637
 Transform:
@@ -244,7 +243,7 @@ GameObject:
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3429233047349427078
 Transform:
