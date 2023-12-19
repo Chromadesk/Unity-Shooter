@@ -286,9 +286,8 @@ MonoBehaviour:
   attackCooldown: 1
   projectile: {fileID: 508557508280956100, guid: 4477ed0a8587d7f44846479283a6e94b, type: 3}
   gunSmokeParticle: {fileID: 1490231147973860628, guid: bde8f0a9ea6251e4b9a0cdf326be3683, type: 3}
-  projectileVelocity: 20
+  projectileVelocity: 10
   fireSound: {fileID: 4361955411869932588}
-  player: {fileID: 0}
   agent: {fileID: 666229543431952374}
   alertRange: 10
   attackRange: 7

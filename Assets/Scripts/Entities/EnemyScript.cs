@@ -7,7 +7,7 @@ namespace Scripts
 {
     public class EnemyScript : EntityClass
     {
-        [SerializeField] Transform player;
+        Transform player;
         [SerializeField] NavMeshAgent agent;
 
         //States
@@ -26,6 +26,11 @@ namespace Scripts
         protected override void OnDied()
         {
             Destroy(gameObject);
+        }
+
+        private void Awake()
+        {
+           player = GameObject.Find("Player").transform;
         }
 
         void DecideAction()
