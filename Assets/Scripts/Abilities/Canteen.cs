@@ -9,6 +9,8 @@ namespace Abilities
 {
     public class Canteen : Ability
     {
+        protected new readonly string type = "special";
+
         public readonly int maxCharge = 40;
         readonly int maxOverCharge = 80;
         public int currentCharge = 0;
@@ -17,13 +19,9 @@ namespace Abilities
         readonly new float cooldown = 5;
         float decayTime;
 
-        public Canteen() : base(Canteen, "special")
-        {
-
-        }
-
         protected override void OnAwake()
         {
+            user.abilitySpecial = gameObject.GetComponent<Canteen>();
             decayTime = Time.time;
         }
 
@@ -36,6 +34,7 @@ namespace Abilities
         {
             if (currentCharge <= 0 || onCooldown) return;
 
+            if (user.Health == user.maxHealth) return;
             if (user.Health + currentCharge > user.maxHealth) user.Health = user.maxHealth;
             else user.Health += currentCharge;
 

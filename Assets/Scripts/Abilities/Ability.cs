@@ -9,26 +9,22 @@ namespace Abilities
 {
     public abstract class Ability : MonoBehaviour
     {
+        //Copy this into OnAwake and replace ? with the ability type & class: user.ability? = gameObject.GetComponent<?>();
+        //In time I will fix this. But now, I sleep.
+
         protected EntityClass user;
         protected float cooldown;
         protected bool onCooldown = false;
-        protected readonly Type classType;
-        protected readonly string abilityType;
-
-        public Ability(Type classType, string abilityType)
-        {
-            this.classType = classType;
-            this.abilityType = abilityType;
-        }
+        protected readonly string type;
 
         private void Awake()
         {
-            user = gameObject.GetComponent<EntityClass>();
+            user = gameObject.GetComponentInParent<EntityClass>();
             OnAwake();
         }
 
         public abstract void Use();
-        protected virtual void OnAwake() { }
+        protected abstract void OnAwake();
 
         public virtual void OnDamageDealt(float damage) { }
         public virtual void OnDamageRecieved(float damage) { }
