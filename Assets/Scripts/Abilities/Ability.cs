@@ -26,6 +26,7 @@ namespace Abilities
         public abstract void Use();
         protected abstract void OnAwake();
 
+
         public virtual void OnDamageDealt(float damage) { }
         public virtual void OnDamageRecieved(float damage) { }
 

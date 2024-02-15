@@ -11,11 +11,6 @@ namespace Scripts
 {
     public class PlayerScript : EntityClass
     {
-        int maxAmmo = 6;
-        int currentAmmo = 6;
-        float reloadTime = 0.45f;
-        bool isReloading = false;
-
         //Sounds
         [SerializeField] AudioSource reloadSound;
         [SerializeField] AudioSource emptySound;
@@ -23,6 +18,9 @@ namespace Scripts
 
         //UI
         [SerializeField] CombatUI combatUI;
+
+        //Controls
+        bool usingMelee = true;
 
         void Update()
         {
@@ -44,35 +42,32 @@ namespace Scripts
 
         void RunControls()
         {
+            //Move controls
             float inputHorz = Input.GetAxis("Horizontal");
             float inputVert = Input.GetAxis("Vertical");
             rB.velocity = new Vector3(inputHorz * moveSpeed, rB.velocity.y, inputVert * moveSpeed);
 
             if (Input.GetKeyDown(KeyCode.F)) abilitySpecial.Use();
             if (Input.GetButtonDown("Interact")) Interact();
-            if (Input.GetButtonDown("Fire2")) AltFire(true);
-            if (Input.GetButtonUp("Fire2")) AltFire(false);
-
-            if (Input.GetButtonDown("Reload"))
-            {
-                if (currentAmmo == maxAmmo) return;
-                if (isReloading) 
-                { 
-                    StopCoroutine(Reload()); 
-                    reloadEnd.Play(); 
-                    isReloading = false; 
-                    return;
-                }
-                StartCoroutine(Reload());
-            }
-                
+            if (Input.GetKeyDown(KeyCode.Q)) { if (usingMelee) usingMelee = false; else usingMelee = true; }
             if (Input.GetButtonDown("Fire1"))
             {
-                if (isReloading || !isStanding) return;
-                if (currentAmmo <= 0) { emptySound.Play(); return; }
-                FireProjectile();
-                RemoveAmmo();
+                if (abilityRanged && !usingMelee) { abilityRanged.Use(); return; }
+                if (abilityMelee) abilityMelee.Use();
             }
+
+            //if (Input.GetButtonDown("Reload"))
+            //{
+            //    if (currentAmmo == maxAmmo) return;
+            //    if (isReloading)
+            //    {
+            //        StopCoroutine(Reload());
+            //        reloadEnd.Play();
+            //        isReloading = false;
+            //        return;
+            //    }
+            //    StartCoroutine(Reload());
+            //}
         }
 
         void MoveCameraToPlayer()
@@ -100,40 +95,35 @@ namespace Scripts
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-        void AltFire(bool isDown)
-        {
-            if (cover != null) cover.ChangeStandCrouch(isDown);
-        }
+        //IEnumerator Reload()
+        //{
+        //    isReloading = true;
 
-        IEnumerator Reload()
-        {
-            isReloading = true;
-
-            while (currentAmmo != maxAmmo && isReloading)
-            {
-                yield return new WaitForSeconds(reloadTime);
-                if (!isReloading) yield break;
-                AddAmmo();
-            }
+        //    while (currentAmmo != maxAmmo && isReloading)
+        //    {
+        //        yield return new WaitForSeconds(reloadTime);
+        //        if (!isReloading) yield break;
+        //        AddAmmo();
+        //    }
             
-            yield return new WaitForSeconds(reloadSound.clip.length);
-            combatUI.SpinCylinder(reloadEnd.clip.length);
-            reloadEnd.Play();
-            yield return new WaitForSeconds(reloadEnd.clip.length);
-            isReloading = false;
-        }
+        //    yield return new WaitForSeconds(reloadSound.clip.length);
+        //    combatUI.SpinCylinder(reloadEnd.clip.length);
+        //    reloadEnd.Play();
+        //    yield return new WaitForSeconds(reloadEnd.clip.length);
+        //    isReloading = false;
+        //}
 
-        void AddAmmo()
-        {
-            currentAmmo += 1;
-            reloadSound.Play();
-            combatUI.AddUIAmmo(reloadTime);
-        }
+        //void AddAmmo()
+        //{
+        //    currentAmmo += 1;
+        //    reloadSound.Play();
+        //    combatUI.AddUIAmmo(reloadTime);
+        //}
 
-        void RemoveAmmo()
-        {
-            currentAmmo -= 1;
-            combatUI.RemoveUIAmmo(attackCooldown);
-        }
+        //void RemoveAmmo()
+        //{
+        //    currentAmmo -= 1;
+        //    combatUI.RemoveUIAmmo(attackCooldown);
+        //}
     }
 }
