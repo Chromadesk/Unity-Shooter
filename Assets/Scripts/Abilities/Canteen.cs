@@ -1,63 +1,70 @@
 using Scripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
-public class Canteen : MonoBehaviour
+namespace Abilities
 {
-    [SerializeField] PlayerScript player;
-
-    public readonly int maxCharge = 40;
-    readonly int maxOverCharge = 80;
-    public int currentCharge = 0;
-    readonly float damageDealtCharge = 0.1f; //Percentage
-    readonly float damageRecievedCharge = 0.1f; //Percentage
-    readonly float cooldown = 5;
-    bool onCooldown = false;
-    float decayTime;
-
-    private void Start()
+    public class Canteen : Ability
     {
-        decayTime = Time.time;
+        public readonly int maxCharge = 40;
+        readonly int maxOverCharge = 80;
+        public int currentCharge = 0;
+        readonly float damageDealtCharge = 0.1f; //Percentage
+        readonly float damageRecievedCharge = 0.1f; //Percentage
+        readonly new float cooldown = 5;
+        float decayTime;
+
+        public Canteen() : base(Canteen, "special")
+        {
+
+        }
+
+        protected override void OnAwake()
+        {
+            decayTime = Time.time;
+        }
+
+        private void Update()
+        {
+            DecayOverharge();
+        }
+
+        public override void Use()
+        {
+            if (currentCharge <= 0 || onCooldown) return;
+
+            if (user.Health + currentCharge > user.maxHealth) user.Health = user.maxHealth;
+            else user.Health += currentCharge;
+
+            currentCharge = 0;
+            onCooldown = true;
+            Invoke(nameof(ResetCooldown), cooldown);
+        }
+
+        public void Charge(float amount, bool damDealt)
+        {
+            if (currentCharge >= maxOverCharge) return;
+
+            float chargeMultiplier;
+
+            if (damDealt) chargeMultiplier = damageDealtCharge; else chargeMultiplier = damageRecievedCharge;
+
+            int addCharge = (int)Mathf.Round(amount * chargeMultiplier);
+
+            if (addCharge + currentCharge > maxOverCharge) currentCharge = maxOverCharge; else currentCharge += addCharge;
+        }
+
+        void DecayOverharge()
+        {
+            if (currentCharge <= maxCharge || Time.time - decayTime < 1) return;
+            currentCharge -= 1;
+            decayTime = Time.time;
+        }
+
+        public override void OnDamageDealt(float damage) { Charge(damage, true); }
+        public override void OnDamageRecieved(float damage) { Charge(damage, false); }
     }
-
-    private void Update()
-    {
-        DecayOverharge();
-    }
-
-    public void Use()
-    {
-        if (currentCharge <= 0 || onCooldown) return;
-
-        if (player.Health + currentCharge > player.maxHealth) player.Health = player.maxHealth; 
-        else player.Health += currentCharge;
-
-        currentCharge = 0;
-        onCooldown = true;
-        Invoke(nameof(ResetCooldown), cooldown);
-    }
-
-    public void Charge(float amount, bool damDealt)
-    {
-        if (currentCharge >= maxOverCharge) return;
-
-        float chargeMultiplier;
-
-        if (damDealt) chargeMultiplier = damageDealtCharge; else chargeMultiplier = damageRecievedCharge;
-
-        int addCharge = (int)Mathf.Round(amount * chargeMultiplier);
-
-        if (addCharge + currentCharge > maxOverCharge) currentCharge = maxOverCharge; else currentCharge += addCharge;
-    }
-
-    void DecayOverharge()
-    {
-        if (currentCharge <= maxCharge || Time.time - decayTime < 2) return;
-        currentCharge -= 1;
-        decayTime = Time.time;
-    }
-
-    void ResetCooldown() { onCooldown = false; }
 }

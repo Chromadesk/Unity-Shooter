@@ -1,3 +1,4 @@
+using Abilities;
 using Scripts;
 using System.Collections;
 using System.Collections.Generic;
@@ -65,12 +66,18 @@ public class CombatUI : MonoBehaviour
         else healthText.text = "0";
     }
 
-    public void DisplayCanteen(float charge, float maxCharge)
+    public void DisplayAbility(Ability ability)
     {
-        if (charge >= 0) canteenText.text = charge.ToString();
+        if (ability == null) return;
+        if (ability as Canteen) { DisplayCanteen(ability as Canteen); return; }
+    }
+
+    void DisplayCanteen(Canteen canteen)
+    {
+        if (canteen.currentCharge >= 0) canteenText.text = canteen.currentCharge.ToString();
         else canteenText.text = "0";
 
-        if (charge > maxCharge) canteenText.color = new Color(255, 252, 0, 255);
+        if (canteen.currentCharge > canteen.maxCharge) canteenText.color = new Color(255, 252, 0, 255);
         else canteenText.color = new Color(255, 180, 84, 255);
     }
 }

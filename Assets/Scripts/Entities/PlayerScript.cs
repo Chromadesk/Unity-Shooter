@@ -1,3 +1,4 @@
+using Abilities;
 using Interactable;
 using System;
 using System.Collections;
@@ -20,9 +21,6 @@ namespace Scripts
         [SerializeField] AudioSource emptySound;
         [SerializeField] AudioSource reloadEnd;
 
-        //Abilities
-        [SerializeField] Canteen canteen;
-
         //UI
         [SerializeField] CombatUI combatUI;
 
@@ -30,8 +28,11 @@ namespace Scripts
         {
             if (Health <= 0) return;
             FaceMouse();
+            MoveCameraToPlayer();
             RunControls();
-            combatUI.DisplayCanteen(canteen.currentCharge, canteen.maxCharge);
+            combatUI.DisplayAbility(abilityMelee);
+            combatUI.DisplayAbility(abilityRanged);
+            combatUI.DisplayAbility(abilitySpecial);
         }
 
         void FaceMouse()
@@ -47,13 +48,7 @@ namespace Scripts
             float inputVert = Input.GetAxis("Vertical");
             rB.velocity = new Vector3(inputHorz * moveSpeed, rB.velocity.y, inputVert * moveSpeed);
 
-            //Camera follows the player
-            Camera.main.transform.position = new Vector3(
-                transform.position.x,
-                Camera.main.transform.position.y, 
-                transform.position.z);
-
-            if (Input.GetKeyDown(KeyCode.F)) canteen.Use();
+            if (Input.GetKeyDown(KeyCode.F)) abilitySpecial.Use();
             if (Input.GetButtonDown("Interact")) Interact();
             if (Input.GetButtonDown("Fire2")) AltFire(true);
             if (Input.GetButtonUp("Fire2")) AltFire(false);
@@ -78,6 +73,14 @@ namespace Scripts
                 FireProjectile();
                 RemoveAmmo();
             }
+        }
+
+        void MoveCameraToPlayer()
+        {
+            Camera.main.transform.position = new Vector3(
+                transform.position.x,
+                Camera.main.transform.position.y,
+                transform.position.z);
         }
 
         protected override void OnDied()
@@ -132,8 +135,5 @@ namespace Scripts
             currentAmmo -= 1;
             combatUI.RemoveUIAmmo(attackCooldown);
         }
-
-        public override void OnDamageDealt(float damage) { canteen.Charge(damage, true); }
-        protected override void OnDamageRecieved(float damage) { canteen.Charge(damage, false); }
     }
 }

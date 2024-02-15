@@ -4,6 +4,7 @@ using UnityEngine;
 using Interactable;
 using UnityEditorInternal;
 using System;
+using Abilities;
 
 namespace Scripts
 {
@@ -32,6 +33,11 @@ namespace Scripts
         static int nextId = 0;
         bool damageDebounce = false;
 
+        //Abilties
+        public Ability abilityMelee;
+        public Ability abilityRanged;
+        public Ability abilitySpecial;
+
         public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
 
         public float Health 
@@ -43,9 +49,9 @@ namespace Scripts
                 if (health <= 0) OnDied(); 
                 OnHealthSet(health);
             } 
-        }        
+        }
 
-        void Start()
+        private void Awake()
         {
             id = nextId;
             nextId++;
@@ -53,6 +59,8 @@ namespace Scripts
             projScale = projectile.transform.localScale;
 
             rB = GetComponent<Rigidbody>();
+
+            OnAwake();
         }
 
         public void TakeDamage(float damage)
@@ -111,10 +119,21 @@ namespace Scripts
 
         protected abstract void OnDied();
         protected virtual void OnHealthSet(float value) { }
-        protected virtual void OnDamageRecieved(float value) { }
-        public virtual void OnDamageDealt(float value) { }
+        public void OnDamageDealt(float damage)
+        {
+            if (abilityMelee) abilityMelee.OnDamageDealt(damage);
+            if (abilityRanged) abilityRanged.OnDamageDealt(damage);
+            if (abilitySpecial) abilitySpecial.OnDamageDealt(damage);
+        }
+        protected void OnDamageRecieved(float damage)
+        {
+            if (abilityMelee) abilityMelee.OnDamageRecieved(damage);
+            if (abilityRanged) abilityRanged.OnDamageRecieved(damage);
+            if (abilitySpecial) abilitySpecial.OnDamageRecieved(damage);
+        }
         void ResetHasAttacked() { hasAttacked = false; }
         void ResetDamageDebounce() { damageDebounce = false; }
+        protected virtual void OnAwake() { }
 
     }
 }

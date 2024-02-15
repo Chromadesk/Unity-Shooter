@@ -28,7 +28,7 @@ namespace Scripts
             Destroy(gameObject);
         }
 
-        private void Awake()
+        protected override void OnAwake()
         {
            player = GameObject.Find("Player").transform;
         }
