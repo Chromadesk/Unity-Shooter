@@ -9,8 +9,6 @@ namespace Abilities
 {
     public class Canteen : Ability
     {
-        protected new readonly string type = "special";
-
         public readonly int maxCharge = 40;
         readonly int maxOverCharge = 80;
         public int currentCharge = 0;
@@ -21,7 +19,7 @@ namespace Abilities
 
         protected override void OnAwake()
         {
-            user.abilitySpecial = gameObject.GetComponent<Canteen>();
+            user.ability = gameObject.GetComponent<Canteen>();
             decayTime = Time.time;
         }
 

@@ -25,10 +25,8 @@ namespace Scripts
         bool damageDebounce = false;
 
         //Abilties
-        public Ability abilityMelee;
-        public Ability abilityRanged;
-        public Ability abilitySpecial;
-
+        public Gun gun;
+        public Ability ability;
         public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
 
         public float Health 
@@ -86,15 +84,13 @@ namespace Scripts
         protected virtual void OnHealthSet(float value) { }
         public void OnDamageDealt(float damage)
         {
-            if (abilityMelee) abilityMelee.OnDamageDealt(damage);
-            if (abilityRanged) abilityRanged.OnDamageDealt(damage);
-            if (abilitySpecial) abilitySpecial.OnDamageDealt(damage);
+            gun.OnDamageDealt(damage);
+            ability.OnDamageDealt(damage);
         }
         protected void OnDamageRecieved(float damage)
         {
-            if (abilityMelee) abilityMelee.OnDamageRecieved(damage);
-            if (abilityRanged) abilityRanged.OnDamageRecieved(damage);
-            if (abilitySpecial) abilitySpecial.OnDamageRecieved(damage);
+            gun.OnDamageRecieved(damage);
+            ability.OnDamageRecieved(damage);
         }
         void ResetDamageDebounce() { damageDebounce = false; }
         protected virtual void OnAwake() { }

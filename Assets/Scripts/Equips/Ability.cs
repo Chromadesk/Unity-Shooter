@@ -15,18 +15,24 @@ namespace Abilities
         protected EntityClass user;
         protected float cooldown;
         protected bool onCooldown = false;
-        protected readonly string type;
+        protected CombatUI combatUI;
+
+        protected void setStats(float Acooldown)
+        {
+            cooldown = Acooldown;
+        }
 
         private void Awake()
         {
             user = gameObject.GetComponentInParent<EntityClass>();
+            combatUI = gameObject.GetComponentInParent<CombatUI>();
             OnAwake();
         }
 
         public abstract void Use();
         protected abstract void OnAwake();
 
-
+        public virtual void AltUse(KeyCode key) { }
         public virtual void OnDamageDealt(float damage) { }
         public virtual void OnDamageRecieved(float damage) { }
 

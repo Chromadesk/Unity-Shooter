@@ -11,16 +11,8 @@ namespace Scripts
 {
     public class PlayerScript : EntityClass
     {
-        //Sounds
-        [SerializeField] AudioSource reloadSound;
-        [SerializeField] AudioSource emptySound;
-        [SerializeField] AudioSource reloadEnd;
-
         //UI
         [SerializeField] CombatUI combatUI;
-
-        //Controls
-        bool usingMelee = true;
 
         void Update()
         {
@@ -28,9 +20,8 @@ namespace Scripts
             FaceMouse();
             MoveCameraToPlayer();
             RunControls();
-            combatUI.DisplayAbility(abilityMelee);
-            combatUI.DisplayAbility(abilityRanged);
-            combatUI.DisplayAbility(abilitySpecial);
+            combatUI.DisplayAbility(ability);
+            //combatUI.DisplayAbility(gun);
         }
 
         void FaceMouse()
@@ -47,27 +38,9 @@ namespace Scripts
             float inputVert = Input.GetAxis("Vertical");
             rB.velocity = new Vector3(inputHorz * moveSpeed, rB.velocity.y, inputVert * moveSpeed);
 
-            if (Input.GetKeyDown(KeyCode.F)) abilitySpecial.Use();
+            if (Input.GetKeyDown(KeyCode.E)) ability.Use();
             if (Input.GetButtonDown("Interact")) Interact();
-            if (Input.GetKeyDown(KeyCode.Q)) { if (usingMelee) usingMelee = false; else usingMelee = true; }
-            if (Input.GetButtonDown("Fire1"))
-            {
-                if (abilityRanged && !usingMelee) { abilityRanged.Use(); return; }
-                if (abilityMelee) abilityMelee.Use();
-            }
-
-            //if (Input.GetButtonDown("Reload"))
-            //{
-            //    if (currentAmmo == maxAmmo) return;
-            //    if (isReloading)
-            //    {
-            //        StopCoroutine(Reload());
-            //        reloadEnd.Play();
-            //        isReloading = false;
-            //        return;
-            //    }
-            //    StartCoroutine(Reload());
-            //}
+            if (Input.GetButtonDown("Fire1")) gun.Use();
         }
 
         void MoveCameraToPlayer()
@@ -94,36 +67,5 @@ namespace Scripts
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-
-        //IEnumerator Reload()
-        //{
-        //    isReloading = true;
-
-        //    while (currentAmmo != maxAmmo && isReloading)
-        //    {
-        //        yield return new WaitForSeconds(reloadTime);
-        //        if (!isReloading) yield break;
-        //        AddAmmo();
-        //    }
-            
-        //    yield return new WaitForSeconds(reloadSound.clip.length);
-        //    combatUI.SpinCylinder(reloadEnd.clip.length);
-        //    reloadEnd.Play();
-        //    yield return new WaitForSeconds(reloadEnd.clip.length);
-        //    isReloading = false;
-        //}
-
-        //void AddAmmo()
-        //{
-        //    currentAmmo += 1;
-        //    reloadSound.Play();
-        //    combatUI.AddUIAmmo(reloadTime);
-        //}
-
-        //void RemoveAmmo()
-        //{
-        //    currentAmmo -= 1;
-        //    combatUI.RemoveUIAmmo(attackCooldown);
-        //}
     }
 }
