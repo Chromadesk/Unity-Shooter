@@ -5647,7 +5647,7 @@ GameObject:
   - component: {fileID: 1795376982}
   - component: {fileID: 1795376983}
   m_Layer: 8
-  m_Name: Shoot
+  m_Name: GunStandard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5686,6 +5686,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 508557508280956100, guid: 719e1874af926cb47be89f4b34e207c5, type: 3}
   gunSmokeParticle: {fileID: 1490231147973860628, guid: bde8f0a9ea6251e4b9a0cdf326be3683, type: 3}
+  reloadSound: {fileID: 1767272995}
+  reloadEnd: {fileID: 1559330573}
+  emptySound: {fileID: 1974541364}
   fireSound: {fileID: 1098736140}
 --- !u!43 &1810624902
 Mesh:

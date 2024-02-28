@@ -34,11 +34,6 @@ namespace Abilities
             reloadTime = AreloadTime;
             damage = Adamage;
             bulletVelocity = AbulletVelocity;
-        }
-
-        private void Awake()
-        {
-            user.gun = gameObject.GetComponent<GunStandard>();
 
             projScale = projectile.transform.localScale;
         }
@@ -54,6 +49,7 @@ namespace Abilities
             if (!Physics.Raycast(user.transform.position, user.transform.forward, out RaycastHit hit, projScale.z))
             {
                 bullet = fireProjectile();
+                RemoveAmmo();
             }
             else return;
 
@@ -68,10 +64,8 @@ namespace Abilities
             Invoke(nameof(ResetCooldown), cooldown);
         }
 
-        public override void AltUse(KeyCode key)
+        public void StartReload()
         {
-            if (key.CompareTo(KeyCode.R) == 0) return;
-
             if (currentAmmo == maxAmmo) return;
             if (isReloading)
             {

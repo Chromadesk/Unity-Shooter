@@ -41,6 +41,7 @@ namespace Scripts
             if (Input.GetKeyDown(KeyCode.E)) ability.Use();
             if (Input.GetButtonDown("Interact")) Interact();
             if (Input.GetButtonDown("Fire1")) gun.Use();
+            if (Input.GetKeyDown(KeyCode.R)) gun.StartReload();
         }
 
         void MoveCameraToPlayer()
