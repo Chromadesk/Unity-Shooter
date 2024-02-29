@@ -85,12 +85,12 @@ namespace Scripts
         public void OnDamageDealt(float damage)
         {
             gun.OnDamageDealt(damage);
-            ability.OnDamageDealt(damage);
+            if (ability) ability.OnDamageDealt(damage);
         }
         protected void OnDamageRecieved(float damage)
         {
             gun.OnDamageRecieved(damage);
-            ability.OnDamageRecieved(damage);
+            if (ability) ability.OnDamageRecieved(damage);
         }
         void ResetDamageDebounce() { damageDebounce = false; }
         protected virtual void OnAwake() { }

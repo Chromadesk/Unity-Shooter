@@ -18,12 +18,13 @@ namespace Abilities
         [SerializeField] protected AudioSource fireSound;
 
         //Stats
-        protected int maxAmmo;
-        protected int currentAmmo;
+        public int maxAmmo;
+        public int currentAmmo;
         protected float reloadTime;
+        public float reloadTimeFull;
         protected float damage;
         protected float bulletVelocity;
-        protected bool isReloading = false;
+        public bool isReloading = false;
 
         protected void setStats(float Acooldown, int AmaxAmmo, float AreloadTime,
             float Adamage, float AbulletVelocity)
@@ -35,6 +36,7 @@ namespace Abilities
             damage = Adamage;
             bulletVelocity = AbulletVelocity;
 
+            reloadTimeFull = AreloadTime * AmaxAmmo;
             projScale = projectile.transform.localScale;
         }
 
@@ -104,7 +106,7 @@ namespace Abilities
 
             //Delay & animation before reload truly ends
             yield return new WaitForSeconds(reloadSound.clip.length);
-            combatUI.SpinCylinder(reloadEnd.clip.length);
+            if (combatUI) combatUI.SpinCylinder(reloadEnd.clip.length);
             reloadEnd.Play();
             yield return new WaitForSeconds(reloadEnd.clip.length);
             isReloading = false;
@@ -114,13 +116,13 @@ namespace Abilities
         {
             currentAmmo += 1;
             reloadSound.Play();
-            combatUI.AddUIAmmo(reloadTime);
+            if (combatUI) combatUI.AddUIAmmo(reloadTime);
         }
 
         void RemoveAmmo()
         {
             currentAmmo -= 1;
-            combatUI.RemoveUIAmmo(cooldown);
+            if (combatUI) combatUI.RemoveUIAmmo(cooldown);
         }
     }
 }

@@ -1,110 +1,96 @@
 
-//using UnityEngine;
-//using UnityEngine.AI;
-//using static UnityEngine.GraphicsBuffer;
+using UnityEngine;
+using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
-//namespace Scripts
-//{
-//    public class EnemyScript : EntityClass
-//    {
-//        Transform player;
-//        [SerializeField] NavMeshAgent agent;
+namespace Scripts
+{
+    public class EnemyScript : EntityClass
+    {
+        Transform player;
+        [SerializeField] NavMeshAgent agent;
 
-//        //States
-//        [SerializeField] float alertRange = 10f;
-//        [SerializeField] float attackRange = 6f;
-//        [SerializeField] float spaceBuffer = 3f;
-//        bool isAlerted, hasJumped, canSeePlayer = false;
-//        RaycastHit[] nearbyAI = new RaycastHit[10];
-//        RaycastHit rayToPlayer;
+        //States
+        float alertRange = 10f;
+        float attackRange = 10f;
+        float spaceBuffer = 3f;
+        bool canSeePlayer = false;
+        bool canAttack = true;
+        RaycastHit rayToPlayer;
 
-//        private void FixedUpdate()
-//        {
-//            DecideAction();
-//        }
+        private void FixedUpdate()
+        {
+            DecideAction();
+        }
 
-//        protected override void OnDied()
-//        {
-//            Destroy(gameObject);
-//        }
+        protected override void OnDied()
+        {
+            Destroy(gameObject);
+        }
 
-//        protected override void OnAwake()
-//        {
-//           player = GameObject.Find("Player").transform;
-//        }
+        protected override void OnAwake()
+        {
+            player = GameObject.Find("Player").transform;
+        }
 
-//        void DecideAction()
-//        {
-//            _ = Physics.BoxCast(
-//                transform.position,
-//                new Vector3(projScale.x / 2, projScale.y / 2, projScale.z / 2), 
-//                (player.position - transform.position).normalized,
-//                out rayToPlayer,
-//                transform.rotation,
-//                alertRange);
+        void DecideAction()
+        {
+            _ = Physics.BoxCast(
+                transform.position,
+                new Vector3(0.25f, 0.25f, 0.25f),
+                (player.position - transform.position).normalized,
+                out rayToPlayer,
+                transform.rotation,
+                alertRange);
 
-//            if (rayToPlayer.collider && rayToPlayer.collider.gameObject.CompareTag("Player")) canSeePlayer = true; else canSeePlayer = false;
+            if (rayToPlayer.collider && rayToPlayer.collider.gameObject.CompareTag("Player"))
+            {
+                canSeePlayer = true;
+            } 
+            else canSeePlayer = false;
 
-//            //When the AI sees the player, they will jump and look at them for 0.5s, then stay alerted forever.
-//            if (!isAlerted) { 
-//                if (!hasJumped && canSeePlayer)
-//                {
-//                    AlertAI();
-//                    AlertNearbyAI();
-//                }
-//                return;
-//            }
+            if (canSeePlayer) transform.LookAt(player);
 
-//            transform.LookAt(player);
+            TryAttackOrFollow();
+        }
 
-//            TryAttackOrFollow();
-//        }
+        void TryAttackOrFollow()
+        {
+            if ((!canSeePlayer || rayToPlayer.distance > spaceBuffer) && !agent.isStopped) { agent.SetDestination(player.position); }
 
-//        public void AlertAI()
-//        {
-//            if (isAlerted) return;
+            if (rayToPlayer.distance <= attackRange 
+                && !gun.onCooldown
+                && canSeePlayer
+                && !gun.isReloading
+                && canAttack)
+            {
+                Attack();
+            }
 
-//            rB.isKinematic = true;
-//            Invoke(nameof(ResetIsAlerted), 0.5f);
-//        }
+            if (!gun.isReloading && gun.currentAmmo <= 0) Reload();
+        }
 
-//        void AlertNearbyAI()
-//        {
-//            _ = Physics.SphereCastNonAlloc(transform.position, alertRange, transform.up, nearbyAI, 0.1f, 1 << LayerMask.NameToLayer("Enemy"));
-//            foreach (RaycastHit hit in nearbyAI) 
-//            {
-//                if (hit.collider == null) return;
+        void Attack()
+        {
+            gun.Use();
+            canAttack = false;
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+            Invoke(nameof(ResetMoveStop), 0.3f);
+            Invoke(nameof(ResetCanAttack), gun.cooldown * Random.Range(4, 5) + 0.2f);
+        }
 
-//                hit.collider.gameObject.SendMessage("AlertAI", SendMessageOptions.DontRequireReceiver);
-                
-//            }
-//        }
+        void Reload()
+        {
+            gun.StartReload();
+        }
 
-//        void TryAttackOrFollow()
-//        {
-//            if ((!canSeePlayer || rayToPlayer.distance > spaceBuffer) && !agent.isStopped) { agent.SetDestination(player.position); }
+        void ResetMoveStop() { agent.isStopped = false; }
+        void ResetCanAttack() { canAttack = true; }
 
-//            if (rayToPlayer.distance <= attackRange && !hasAttacked && canSeePlayer)
-//            {
-//                FireProjectile();
-//                agent.isStopped = true;
-//                agent.velocity = Vector3.zero;
-//                Invoke(nameof(ResetMoveStop), 0.3f);
-//            }
-//        }
-
-//        void ResetMoveStop() { agent.isStopped = false; }
-
-//        void ResetIsAlerted() { isAlerted = true; }
-
-//        void FindCover()
-//        {
-//            //TODO
-//        }
-
-//        protected override void OnHealthSet(float health)
-//        {
-//            if (!isAlerted) { AlertAI(); AlertNearbyAI(); }
-//        }
-//    }
-//} 
+        void FindCover()
+        {
+            //TODO
+        }
+    }
+}
