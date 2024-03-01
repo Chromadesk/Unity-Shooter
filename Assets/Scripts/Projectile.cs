@@ -1,13 +1,14 @@
 using Interactable;
 using Scripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public GameObject shooter;
-    public float damage;
+    [NonSerialized] public GameObject shooter;
+    [NonSerialized] public float damage;
     float initTime;
 
     private void OnCollisionEnter(Collision collision)

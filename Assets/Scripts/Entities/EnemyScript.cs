@@ -11,9 +11,9 @@ namespace Scripts
         [SerializeField] NavMeshAgent agent;
 
         //States
-        float alertRange = 10f;
-        float attackRange = 10f;
-        float spaceBuffer = 3f;
+        readonly float alertRange = 10f;
+        readonly float attackRange = 10f;
+        readonly float spaceBuffer = 3f;
         bool canSeePlayer = false;
         bool canAttack = true;
         RaycastHit rayToPlayer;
@@ -56,7 +56,11 @@ namespace Scripts
 
         void TryAttackOrFollow()
         {
-            if ((!canSeePlayer || rayToPlayer.distance > spaceBuffer) && !agent.isStopped) { agent.SetDestination(player.position); }
+            if (!agent.isStopped && rayToPlayer.distance > spaceBuffer) {
+                agent.SetDestination(player.position); 
+            }
+
+            if (!gun.isReloading && gun.currentAmmo <= 0) Reload();
 
             if (rayToPlayer.distance <= attackRange 
                 && !gun.onCooldown
@@ -66,8 +70,6 @@ namespace Scripts
             {
                 Attack();
             }
-
-            if (!gun.isReloading && gun.currentAmmo <= 0) Reload();
         }
 
         void Attack()
@@ -77,12 +79,19 @@ namespace Scripts
             agent.isStopped = true;
             agent.velocity = Vector3.zero;
             Invoke(nameof(ResetMoveStop), 0.3f);
-            Invoke(nameof(ResetCanAttack), gun.cooldown * Random.Range(4, 5) + 0.2f);
+            Invoke(nameof(ResetCanAttack), gun.cooldown * Random.Range(2, 3) + 0.2f);
         }
 
         void Reload()
         {
+            agent.speed = moveSpeed / 2;
             gun.StartReload();
+            Invoke(nameof(DoAfterReload), gun.reloadTimeFull);
+        }
+
+        void DoAfterReload()
+        {
+            agent.speed = moveSpeed;
         }
 
         void ResetMoveStop() { agent.isStopped = false; }
