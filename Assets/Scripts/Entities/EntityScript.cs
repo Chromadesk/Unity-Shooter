@@ -13,6 +13,7 @@ namespace Scripts
         [SerializeField] protected float health = 100;
         [SerializeField] public readonly float maxHealth = 100;
         [SerializeField] protected float moveSpeed = 3f;
+        [SerializeField] public Canvas canvas;
 
         protected Rigidbody rB;
 

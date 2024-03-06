@@ -19,8 +19,6 @@ namespace Scripts
             FaceMouse();
             MoveCameraToPlayer();
             RunControls();
-            combatUI.DisplayAbility(ability);
-            //combatUI.DisplayAbility(gun);
         }
 
         void FaceMouse()

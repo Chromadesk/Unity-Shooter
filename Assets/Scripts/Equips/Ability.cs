@@ -16,6 +16,7 @@ namespace Abilities
         [NonSerialized] public float cooldown;
         [NonSerialized] public bool onCooldown = false;
         protected CombatUI combatUI;
+        public GameObject UIObject;
 
         protected void setStats(float Acooldown)
         {
@@ -26,12 +27,14 @@ namespace Abilities
         {
             user = gameObject.GetComponentInParent<EntityClass>();
             combatUI = gameObject.GetComponentInParent<CombatUI>();
+            if (user.canvas != null) UIObject.transform.SetParent(user.canvas.transform);
             OnAwake();
         }
 
+        private void OnDestroy() { Destroy(UIObject); }
+
         public abstract void Use();
         protected abstract void OnAwake();
-
         public virtual void AltUse(KeyCode key) { }
         public virtual void OnDamageDealt(float damage) { }
         public virtual void OnDamageRecieved(float damage) { }
