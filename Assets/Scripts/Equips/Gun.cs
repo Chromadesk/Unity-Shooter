@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,13 +19,13 @@ namespace Abilities
         [SerializeField] protected AudioSource fireSound;
 
         //Stats
-        public int maxAmmo;
-        public int currentAmmo;
+        [NonSerialized] public int maxAmmo;
+        [NonSerialized] public int currentAmmo;
         protected float reloadTime;
-        public float reloadTimeFull;
+        [NonSerialized] public float reloadTimeFull;
         protected float damage;
         protected float bulletVelocity;
-        public bool isReloading = false;
+        [NonSerialized] public bool isReloading = false;
 
         protected void setStats(float Acooldown, int AmaxAmmo, float AreloadTime,
             float Adamage, float AbulletVelocity)
@@ -48,7 +49,7 @@ namespace Abilities
             GameObject bullet;
 
             //If the shooter is too close to a wall, don't spawn a bullet.
-            if (!Physics.Raycast(user.transform.position, user.transform.forward, out RaycastHit hit, projScale.z))
+            if (!isReloading && !Physics.Raycast(user.transform.position, user.transform.forward, out RaycastHit hit, projScale.z))
             {
                 bullet = fireProjectile();
                 RemoveAmmo();

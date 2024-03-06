@@ -13,8 +13,8 @@ namespace Abilities
         //In time I will fix this. But now, I sleep.
 
         protected EntityClass user;
-        public float cooldown;
-        public bool onCooldown = false;
+        [NonSerialized] public float cooldown;
+        [NonSerialized] public bool onCooldown = false;
         protected CombatUI combatUI;
 
         protected void setStats(float Acooldown)

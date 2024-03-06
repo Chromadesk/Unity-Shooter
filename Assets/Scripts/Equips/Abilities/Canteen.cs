@@ -9,9 +9,9 @@ namespace Abilities
 {
     public class Canteen : Ability
     {
-        public readonly int maxCharge = 40;
+        [NonSerialized] public readonly int maxCharge = 40;
         readonly int maxOverCharge = 80;
-        public int currentCharge = 0;
+        [NonSerialized] public int currentCharge = 0;
         readonly float damageDealtCharge = 0.1f; //Percentage
         readonly float damageRecievedCharge = 0.1f; //Percentage
         readonly new float cooldown = 5;
