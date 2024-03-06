@@ -1,5 +1,4 @@
 using Abilities;
-using Interactable;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,7 +38,6 @@ namespace Scripts
             rB.velocity = new Vector3(inputHorz * moveSpeed, rB.velocity.y, inputVert * moveSpeed);
 
             if (Input.GetKeyDown(KeyCode.E)) ability.Use();
-            if (Input.GetButtonDown("Interact")) Interact();
             if (Input.GetButtonDown("Fire1")) gun.Use();
             if (Input.GetKeyDown(KeyCode.R)) gun.StartReload();
         }

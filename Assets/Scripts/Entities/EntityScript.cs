@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Interactable;
 using UnityEditorInternal;
 using System;
 using Abilities;
@@ -15,11 +14,9 @@ namespace Scripts
         [SerializeField] public readonly float maxHealth = 100;
         [SerializeField] protected float moveSpeed = 3f;
 
-        GameObject touchedInteractable;
         protected Rigidbody rB;
 
         [NonSerialized] public bool isStanding = true;
-        [NonSerialized] public Cover cover = null;
         [NonSerialized] public int id;
         static int nextId = 0;
         bool damageDebounce = false;
@@ -57,27 +54,6 @@ namespace Scripts
             damageDebounce = true;
             OnDamageRecieved(damage);
             Invoke(nameof(ResetDamageDebounce), 0.01f);
-        }
-
-        //If standing in an Interactable, will activate that trigger's function.
-        //I.E: If standing in the Interactable of cover, signals that cover to enter it.
-        protected void Interact()
-        {
-            if (touchedInteractable && touchedInteractable.CompareTag("Interactable")) 
-            {
-                GameObject interactable = touchedInteractable.transform.parent.gameObject;
-                interactable.GetComponent<InteractableClass>().Use(gameObject, touchedInteractable);
-            }
-        }
-
-        private void OnTriggerEnter(Collider other)
-        { 
-            if (other.isTrigger && other.gameObject.CompareTag("Interactable")) touchedInteractable = other.gameObject;
-        }
-        private void OnTriggerExit(Collider other) 
-        {
-            if (cover != null) return;
-            touchedInteractable = null; 
         }
 
         protected abstract void OnDied();

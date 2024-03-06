@@ -9,6 +9,7 @@ TagManager:
   - Cover
   - Interactable
   - PassBullets
+  - Hazard
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Player
   - Enemy
   - BulletIgnore
-  - 
+  - Projectile
   - 
   - 
   - 

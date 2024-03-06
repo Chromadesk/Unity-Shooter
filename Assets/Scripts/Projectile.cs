@@ -1,4 +1,3 @@
-using Interactable;
 using Scripts;
 using System;
 using System.Collections;
@@ -14,7 +13,7 @@ public class Projectile : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         GameObject hit = collision.gameObject;
-        if (hit == null || hit.CompareTag("Interactable") || hit.gameObject == shooter) return;
+        if (hit == null || hit.gameObject == shooter) return;
 
         //Hitting entities
         if (hit.CompareTag("Player") || hit.CompareTag("Enemy"))

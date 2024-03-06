@@ -35,19 +35,7 @@ namespace Scripts
 
         void DecideAction()
         {
-            _ = Physics.BoxCast(
-                transform.position,
-                new Vector3(0.25f, 0.25f, 0.25f),
-                (player.position - transform.position).normalized,
-                out rayToPlayer,
-                transform.rotation,
-                alertRange);
-
-            if (rayToPlayer.collider && rayToPlayer.collider.gameObject.CompareTag("Player"))
-            {
-                canSeePlayer = true;
-            } 
-            else canSeePlayer = false;
+            CheckIfPlayerInView();
 
             if (canSeePlayer) transform.LookAt(player);
 
@@ -56,7 +44,7 @@ namespace Scripts
 
         void TryAttackOrFollow()
         {
-            if (!agent.isStopped && rayToPlayer.distance > spaceBuffer) {
+            if (!agent.isStopped && GetPlrDistance() > spaceBuffer) {
                 agent.SetDestination(player.position); 
             }
 
@@ -92,6 +80,29 @@ namespace Scripts
         void DoAfterReload()
         {
             agent.speed = moveSpeed;
+        }
+
+        void CheckIfPlayerInView()
+        {
+            _ = Physics.BoxCast(
+                transform.position,
+                new Vector3(0.25f, 0.25f, 0.25f),
+                (player.position - transform.position).normalized,
+                out rayToPlayer,
+                transform.rotation,
+                alertRange);
+
+            if (rayToPlayer.collider && rayToPlayer.collider.gameObject.CompareTag("Player"))
+            {
+                canSeePlayer = true;
+                return;
+            }
+            else canSeePlayer = false;
+        }
+
+        float GetPlrDistance()
+        {
+            return (player.transform.position - transform.position).magnitude;
         }
 
         void ResetMoveStop() { agent.isStopped = false; }
