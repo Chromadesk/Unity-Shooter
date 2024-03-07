@@ -9,13 +9,14 @@ namespace Abilities
 {
     public abstract class Ability : MonoBehaviour
     {
-        //Copy this into OnAwake and replace ? with the ability type & class: user.ability? = gameObject.GetComponent<?>();
-        //In time I will fix this. But now, I sleep.
-
         protected EntityClass user;
         [NonSerialized] public float cooldown;
         [NonSerialized] public bool onCooldown = false;
-        protected CombatUI combatUI;
+
+        //Sounds
+        [SerializeField] List<GameObject> SFXObjects;
+        protected Dictionary<string, GameObject> SFXInstances = new();
+
         protected void setStats(float Acooldown)
         {
             cooldown = Acooldown;
@@ -24,13 +25,12 @@ namespace Abilities
         private void Awake()
         {
             user = gameObject.GetComponentInParent<EntityClass>();
-            combatUI = gameObject.GetComponentInParent<CombatUI>();
             OnAwake();
         }
 
         protected void ParentUIObjects(List<GameObject> UIObjects)
         {
-            if (user.canvas == null) return;
+            if (!user.canvas) return;
 
             foreach (GameObject uiObj in UIObjects) 
             { 
@@ -38,8 +38,18 @@ namespace Abilities
             }
         }
 
+        protected void ParentSFXObjects()
+        {
+            foreach (GameObject sfxObj in SFXObjects)
+            {
+                SFXInstances.Add(sfxObj.name, Instantiate(sfxObj));
+                SFXInstances[sfxObj.name].transform.SetParent(transform, false);
+            }
+        }
+
         public abstract void Use();
         protected abstract void OnAwake();
+        protected abstract void SetupSFX();
         public virtual void AltUse(KeyCode key) { }
         public virtual void OnDamageDealt(float damage) { }
         public virtual void OnDamageRecieved(float damage) { }

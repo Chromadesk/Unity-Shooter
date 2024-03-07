@@ -83,6 +83,7 @@ namespace Abilities
             else UICharge.color = new Color(255, 180, 84, 255);
         }
 
+        protected override void SetupSFX() { }
 
         public override void OnDamageDealt(float damage) { Charge(damage, true); }
         public override void OnDamageRecieved(float damage) { Charge(damage, false); }

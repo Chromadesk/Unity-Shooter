@@ -16,10 +16,10 @@ namespace Abilities
         Vector3 projScale;
 
         //Sounds
-        [SerializeField] protected AudioSource reloadSound;
-        [SerializeField] protected AudioSource reloadEnd;
-        [SerializeField] protected AudioSource emptySound;
-        [SerializeField] protected AudioSource fireSound;
+        protected AudioSource reloadSound;
+        protected AudioSource reloadEnd;
+        protected AudioSource emptySound;
+        protected AudioSource fireSound;
 
         //Stats
         [NonSerialized] public int maxAmmo;
@@ -52,6 +52,7 @@ namespace Abilities
             projScale = projectile.transform.localScale;
 
             SetupUIMag();
+            SetupSFX();
         }
 
         public override void Use()
@@ -183,5 +184,14 @@ namespace Abilities
 
             spins = 0;
         }
+
+        protected override void SetupSFX() {
+            ParentSFXObjects();
+            reloadSound = SFXInstances["Reload"].GetComponent<AudioSource>();
+            reloadEnd = SFXInstances["ReloadEnd"].GetComponent<AudioSource>();
+            fireSound = SFXInstances["Fire"].GetComponent<AudioSource>();
+            emptySound = SFXInstances["Empty"].GetComponent<AudioSource>();
+        }
+
     }
 }
