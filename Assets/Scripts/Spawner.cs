@@ -6,8 +6,8 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject entity;
     GameObject spawnedEntity;
-    float spawnDelayMax = 20;
-    float spawnDelayMin = 10;
+    float spawnDelayMax = 2;
+    float spawnDelayMin = 1;
 
     void Awake()
     {
