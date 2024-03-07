@@ -8,7 +8,14 @@ namespace Abilities
     {
         protected override void OnAwake()
         {
-            setStats(Acooldown: 0.1f, AmaxAmmo: 6, AreloadTime: 0.45f, Adamage: 40f, AbulletVelocity: 40f);
+            setStats(
+                AdoesUIMagSpin: true,
+                Acooldown: 0.1f,
+                AmaxAmmo: 6,
+                AreloadTime: 0.45f,
+                Adamage: 40f,
+                AbulletVelocity: 40f);
+
             user.gun = gameObject.GetComponent<GunStandard>();
         }
     }

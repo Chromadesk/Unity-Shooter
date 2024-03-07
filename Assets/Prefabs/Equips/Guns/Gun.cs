@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
+using UnityEngine.UI;
 
 namespace Abilities
 {
@@ -27,9 +30,17 @@ namespace Abilities
         protected float bulletVelocity;
         [NonSerialized] public bool isReloading = false;
 
-        protected void setStats(float Acooldown, int AmaxAmmo, float AreloadTime,
+        //UI
+        [SerializeField] GameObject UIMagObj;
+        Image UIMag;
+        List<Image> UIBullets = new();
+        int UIBulletIndex = 0;
+        bool doesUIMagSpin;
+
+        protected void setStats(bool AdoesUIMagSpin, float Acooldown, int AmaxAmmo, float AreloadTime,
             float Adamage, float AbulletVelocity)
         {
+            doesUIMagSpin = AdoesUIMagSpin;
             cooldown = Acooldown;
             maxAmmo = AmaxAmmo;
             currentAmmo = AmaxAmmo;
@@ -39,6 +50,8 @@ namespace Abilities
 
             reloadTimeFull = AreloadTime * AmaxAmmo;
             projScale = projectile.transform.localScale;
+
+            SetupUIMag();
         }
 
         public override void Use()
@@ -107,7 +120,7 @@ namespace Abilities
 
             //Delay & animation before reload truly ends
             yield return new WaitForSeconds(reloadSound.clip.length);
-            if (combatUI) combatUI.SpinCylinder(reloadEnd.clip.length);
+            SpinMag(reloadEnd.clip.length);
             reloadEnd.Play();
             yield return new WaitForSeconds(reloadEnd.clip.length);
             isReloading = false;
@@ -117,13 +130,58 @@ namespace Abilities
         {
             currentAmmo += 1;
             reloadSound.Play();
-            if (combatUI) combatUI.AddUIAmmo(reloadTime);
+            AddUIAmmo(reloadTime);
         }
 
         void RemoveAmmo()
         {
             currentAmmo -= 1;
-            if (combatUI) combatUI.RemoveUIAmmo(cooldown);
+            RemoveUIAmmo(cooldown);
+        }
+
+        void SetupUIMag()
+        {
+            UIMagObj = Instantiate(UIMagObj);
+            ParentUIObjects(new List<GameObject>() { UIMagObj });
+
+            UIMag = UIMagObj.GetComponent<Image>();
+            for (int i = 0; i < UIMagObj.transform.childCount; i++)
+            {
+                UIBullets.Add(UIMagObj.transform.GetChild(i).GetComponent<Image>());
+            }
+        }
+
+        void RemoveUIAmmo(float cooldownTime)
+        {
+            UIBullets[UIBulletIndex].enabled = false;
+            UIMag.rectTransform.LeanRotateZ(Mathf.Floor(UIMag.rectTransform.eulerAngles.z + 60), cooldownTime - 0.05f);
+            UIBulletIndex++;
+        }
+
+        void AddUIAmmo(float rotationTime)
+        {
+            UIBulletIndex--;
+            UIBullets[UIBulletIndex].enabled = true;
+            UIMag.rectTransform.LeanRotateZ(Mathf.Floor(UIMag.rectTransform.eulerAngles.z - 60), rotationTime - 0.05f);
+        }
+
+        int spins = 0;
+        float spinTime;
+        void SpinMag(float aSpinTime)
+        {
+            spinTime = aSpinTime / 4;
+            SpinLoop();
+        }
+
+        void SpinLoop()
+        {
+            float cylinderZ = UIMag.rectTransform.eulerAngles.z;
+            UIMag.rectTransform.LeanRotateZ(Mathf.Floor(cylinderZ + 180), spinTime - 0.02f); //Added to prevent overspinning
+            spins++;
+
+            if (spins < 2) { Invoke(nameof(SpinLoop), spinTime); return; }
+
+            spins = 0;
         }
     }
 }

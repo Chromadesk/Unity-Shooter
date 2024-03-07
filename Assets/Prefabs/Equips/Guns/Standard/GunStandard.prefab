@@ -465,13 +465,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e1f75add2a865246b8753bcf29a9166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIObject: {fileID: 8702575186719445041}
   projectile: {fileID: 508557508280956100, guid: 719e1874af926cb47be89f4b34e207c5, type: 3}
   gunSmokeParticle: {fileID: 1490231147973860628, guid: bde8f0a9ea6251e4b9a0cdf326be3683, type: 3}
   reloadSound: {fileID: 2114289081572438993}
   reloadEnd: {fileID: 8709422309792532111}
   emptySound: {fileID: 568033748297543232}
   fireSound: {fileID: 3884281086126237410}
+  UIMagObj: {fileID: 4824643495268097426, guid: 8a13d30052adf004c81a43e090ca2e67, type: 3}
 --- !u!1 &8168519598786462233
 GameObject:
   m_ObjectHideFlags: 0
