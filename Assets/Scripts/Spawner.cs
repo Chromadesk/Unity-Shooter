@@ -6,7 +6,8 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject entity;
     GameObject spawnedEntity;
-    float spawnTime = 10;
+    float spawnDelayMax = 20;
+    float spawnDelayMin = 10;
 
     void Awake()
     {
@@ -15,9 +16,9 @@ public class Spawner : MonoBehaviour
 
     void SpawnEntity()
     {
-        if (spawnedEntity == null) { 
+        if (!spawnedEntity) { 
             spawnedEntity = Instantiate(entity, transform.position, transform.rotation);
         }
-        Invoke(nameof(SpawnEntity), spawnTime * Random.Range(1, 2));
+        Invoke(nameof(SpawnEntity), Random.Range(spawnDelayMin, spawnDelayMax));
     }
 }
